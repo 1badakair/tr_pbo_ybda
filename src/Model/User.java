@@ -4,7 +4,7 @@ package Model;
 public class User {
     private int id;
     private String username;
-    private String passwordHash;
+    private String password_hash;
     private String role;
     private int id_admin;
     private int id_dokter;
@@ -26,12 +26,12 @@ public class User {
         this.username = username;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword_hash() {
+        return password_hash;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword_hash(String password_hash) {
+        this.password_hash = password_hash;
     }
 
     public String getRole() {
@@ -65,5 +65,5 @@ public class User {
     public void setId_pasien(int id_pasien) {
         this.id_pasien = id_pasien;
     }
-
+    
 }

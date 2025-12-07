@@ -4,7 +4,7 @@
  */
 package View;
 
-import Controller.AdminController;
+import Controller.AuthController;
 import javax.swing.JOptionPane;
 
 /**
@@ -149,21 +149,47 @@ public class LoginView extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-       //Menghubungkan objek
-       AdminController auth = new AdminController();
+        //Menghubungkan objek
+        AuthController auth = new AuthController();
 
-        boolean cl = auth.cekLogin(this.txtUsername.getText(),
-                this.txtPassword.getText());
-
-        if (cl == true) {
-            JOptionPane.showMessageDialog(this, "Login Berhasil!!");
-            DashboardAdminView dsh = new DashboardAdminView(this.txtUsername.getText());
-            dsh.setVisible(true);
-            this.setVisible(false);
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Login Gagal!!");
+        String cekLogin = auth.cekLogin(this.txtUsername.getText(), this.txtPassword.getText());
+        
+        if (cekLogin == null) {
+            JOptionPane.showMessageDialog(this, "Login Gagal: username atau password salah");
+            return;
         }
+        switch (cekLogin){
+            case "admin": 
+                JOptionPane.showMessageDialog(this, "Login Berhasil!!");
+                DashboardAdminView dav = new DashboardAdminView();
+                dav.setVisible(true);
+                this.setVisible(false);
+                break;
+            case "dokter": 
+                JOptionPane.showMessageDialog(this, "Login Berhasil!!");
+                DashboardDokterView ddv = new DashboardDokterView();
+                ddv.setVisible(true);
+                this.setVisible(false);
+                break;
+            case "pasien": 
+                JOptionPane.showMessageDialog(this, "Login Berhasil!!");
+                DashboardPasienView dpv = new DashboardPasienView();
+                dpv.setVisible(true);
+                this.setVisible(false);
+                break;
+            default:
+                JOptionPane.showMessageDialog(this, "Role tidak dikenal,,,");
+        }
+                
+//        if (cekLogin == true) {
+//            JOptionPane.showMessageDialog(this, "Login Berhasil!!");
+//            DashboardAdminView dsh = new DashboardAdminView(this.txtUsername.getText());
+//            dsh.setVisible(true);
+//            this.setVisible(false);
+//
+//        } else {
+//            JOptionPane.showMessageDialog(this, "Login Gagal!!");
+//        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

@@ -1,52 +1,57 @@
 package Controller;
 
-import Model.Admin;
-import java.sql.Statement;
+import Model.User;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class AuthController {
 
-    public Statement stm;
+    public Statement stm;     // dipertahankan agar gaya serupa kode lama
     public ResultSet res;
     public String sql;
 
-    //konstruktor
+    // konstruktor
     public AuthController() {
-        //objek koneksi
         Koneksi db = new Koneksi();
-        db.config();
-        this.stm = db.stm;
+        db.config();           // harus men-setup Koneksi.con dan Koneksi.stm
+        this.stm = db.stm;     // tetap diisi (jika db.config mengisi stm)
     }
 
-    //method cekLogin(select)
-    public boolean cekLogin(String un, String pw, String role) {
-        //dipetakan dengan model
-        Admin adm = new Admin();
-        adm.setUsername(un);
-        adm.setPasswordHash(pw);
-        
-        boolean status = false;
+    public String cekLogin(String username, String plainPassword) {
+        // Dipetakan dengan model
+        User usr = new User();
+        usr.setUsername(username);
 
-        //query ke database + cek
+        // Query ke database + cek
         try {
-            //sql query
-            this.sql = "SELECT * FROM tbadmin "
-                    + "WHERE username = '" + adm.getUsername() + "' "
-                    + "AND password = '" + adm.getPasswordHash() + "'";
+            // SQL query
+            this.sql = "SELECT * FROM tb_user WHERE username = '" + usr.getUsername() + "'";
 
-            //menjalankan query
-            //khusus SELECT gunakan 'executeQuery'
+            // Menjalankan query
+            // Khusus SELECT gunakan 'executeQuery'
             this.res = this.stm.executeQuery(sql);
-
-            //pengecekan
+            
+            // Pengecekan
             if (res.next()) {
-                status = true;
+                String passwordHash = res.getString("password_hash");
+                boolean pw_verify = PasswordHash.verify(plainPassword, passwordHash);
+                if (!pw_verify) {
+                    System.out.println("Password salah!");
+                    return null;
+                }
+                
+                String role = res.getString("role");
+                if (role != null) {
+                    return role;
+                } else {
+                    return null;
+                }
             } else {
-                status = false;
+                System.out.println("Data tidak ditemukan");
             }
         } catch (Exception e) {
             System.out.println("Query gagal");
         }
-        return status;
+        return null;
     }
 }

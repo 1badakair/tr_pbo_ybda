@@ -12,7 +12,7 @@ public class Koneksi {
     public void config() {
         try {
             //Variable - variable untuk koneksi
-            String url = "jdbc:mysql://127.0.0.1/dbtech";
+            String url = "jdbc:mysql://127.0.0.1/db_techospital";
             String user = "root";
             String pass = "";
             Class.forName("com.mysql.cj.jdbc.Driver");
