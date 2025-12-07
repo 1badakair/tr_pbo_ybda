@@ -8,6 +8,6 @@ package Controller;
  *
  * @author ASUS
  */
-public class UserController {
+public class PasienController {
     
 }

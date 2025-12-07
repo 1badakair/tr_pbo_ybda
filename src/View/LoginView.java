@@ -45,7 +45,7 @@ public class LoginView extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("TECHNOSPITAL");
+        jLabel1.setText("TECHOSPITAL");
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -150,9 +150,9 @@ public class LoginView extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
        //Menghubungkan objek
-       AdminController ac = new AdminController();
+       AdminController auth = new AdminController();
 
-        boolean cl = ac.cekLogin(this.txtUsername.getText(),
+        boolean cl = auth.cekLogin(this.txtUsername.getText(),
                 this.txtPassword.getText());
 
         if (cl == true) {

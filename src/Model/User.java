@@ -1,12 +1,14 @@
-
 package Model;
+
+
 public class User {
-   private int id;
-   private String nap;
-   private String nama;
-   private String email;
-   private String nomor;
-   private String passwordHash;
+    private int id;
+    private String username;
+    private String passwordHash;
+    private String role;
+    private int id_admin;
+    private int id_dokter;
+    private int id_pasien;
 
     public int getId() {
         return id;
@@ -16,36 +18,12 @@ public class User {
         this.id = id;
     }
 
-    public String getNap() {
-        return nap;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNap(String nap) {
-        this.nap = nap;
-    }
-
-    public String getNama() {
-        return nama;
-    }
-
-    public void setNama(String nama) {
-        this.nama = nama;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getNomor() {
-        return nomor;
-    }
-
-    public void setNomor(String nomor) {
-        this.nomor = nomor;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPasswordHash() {
@@ -55,6 +33,37 @@ public class User {
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
-   
-   
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public int getId_admin() {
+        return id_admin;
+    }
+
+    public void setId_admin(int id_admin) {
+        this.id_admin = id_admin;
+    }
+
+    public int getId_dokter() {
+        return id_dokter;
+    }
+
+    public void setId_dokter(int id_dokter) {
+        this.id_dokter = id_dokter;
+    }
+
+    public int getId_pasien() {
+        return id_pasien;
+    }
+
+    public void setId_pasien(int id_pasien) {
+        this.id_pasien = id_pasien;
+    }
+
 }

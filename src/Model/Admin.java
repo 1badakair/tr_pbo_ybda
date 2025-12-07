@@ -1,32 +1,24 @@
 package Model;
+
 public class Admin {
-    private int id;
-    private String username;
-    private String passwordHash;
 
-    public int getId() {
-        return id;
+    private int id_admin;
+    private int nama_admin;
+
+    public int getId_admin() {
+        return id_admin;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId_admin(int id_admin) {
+        this.id_admin = id_admin;
     }
 
-    public String getUsername() {
-        return username;
+    public int getNama_admin() {
+        return nama_admin;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setNama_admin(int nama_admin) {
+        this.nama_admin = nama_admin;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-    
-    
 }
