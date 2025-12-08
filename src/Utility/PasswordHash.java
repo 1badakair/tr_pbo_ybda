@@ -1,4 +1,4 @@
-package Controller;
+package Utility;
 
 import org.mindrot.jbcrypt.BCrypt;
 

@@ -1,6 +1,8 @@
 package Controller;
 
 import Model.User;
+import Utility.PasswordHash;
+import Utility.Koneksi;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -34,7 +36,7 @@ public class AuthController {
             // Pengecekan
             if (res.next()) {
                 String passwordHash = res.getString("password_hash");
-                boolean pw_verify = PasswordHash.verify(plainPassword, passwordHash);
+                boolean pw_verify = Utility.PasswordHash.verify(plainPassword, passwordHash);
                 if (!pw_verify) {
                     System.out.println("Password salah!");
                     return null;
