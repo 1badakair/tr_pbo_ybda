@@ -16,6 +16,12 @@ public class AdminView extends javax.swing.JFrame {
     public AdminView() {
         initComponents();
     }
+    
+    public AdminView(String username){
+        
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -422,9 +428,9 @@ public class AdminView extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addGap(25, 25, 25)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jTabbedPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(21, Short.MAX_VALUE))
         );
