@@ -43,7 +43,7 @@ public class AdminView extends javax.swing.JFrame {
         txtJam = new javax.swing.JTextField();
         txtKuota = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        btnClear = new javax.swing.JButton();
+        Cl = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
@@ -115,8 +115,7 @@ public class AdminView extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(255, 255, 153));
         jButton1.setText("Tambah");
 
-        btnClear.setBackground(new java.awt.Color(255, 255, 153));
-        btnClear.setText("Clear");
+        Cl.setText("Clear");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -154,7 +153,7 @@ public class AdminView extends javax.swing.JFrame {
                                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                                 .addComponent(jButton1)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(btnClear))
+                                                .addComponent(Cl))
                                             .addComponent(txtKuota, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(4, 4, 4)))))
                         .addGap(0, 49, Short.MAX_VALUE)))
@@ -180,7 +179,7 @@ public class AdminView extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(btnClear))
+                    .addComponent(Cl))
                 .addGap(54, 54, 54)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
@@ -493,7 +492,7 @@ public class AdminView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnClear;
+    private javax.swing.JButton Cl;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
