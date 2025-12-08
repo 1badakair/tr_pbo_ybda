@@ -4,17 +4,37 @@
  */
 package View;
 
+import Controller.DokterController;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author LENOVO
  */
-public class DashboardDokterView extends javax.swing.JFrame {
+public class DokterView extends javax.swing.JFrame {
 
     /**
      * Creates new form DashboardDokterView
      */
-    public DashboardDokterView() {
+    public DokterView() {
         initComponents();
+    }
+    
+    public DokterView(String nama_dokter){
+        initComponents();
+        this.jLabel1.setText("Selamat Datang "+ nama_dokter);
+        
+        // Agar ketika form dashboard di Load, tabelnya auto terisi
+        DokterController dc = new DokterController();
+        DefaultTableModel dtm = dc.createTable();
+        
+        // Menerapkan desain tabel (virtual) ke TabelSelect (tabel benaran)
+        this.jTable1.setModel(dtm);
+//        this.TabelUbah.setModel(dtm);
+//        this.TabelHapus.setModel(dtm);
+        
+        // Panggil method tampilkanAnggota
+        dc.tampilkanDokter();
     }
 
     /**
@@ -185,7 +205,7 @@ public class DashboardDokterView extends javax.swing.JFrame {
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Edit", jPanel2);
+        jTabbedPane1.addTab("Tambah", jPanel2);
 
         jPanel3.setBackground(new java.awt.Color(144, 224, 239));
 
@@ -425,20 +445,21 @@ public class DashboardDokterView extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DashboardDokterView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DokterView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DashboardDokterView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DokterView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DashboardDokterView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DokterView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DashboardDokterView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DokterView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DashboardDokterView().setVisible(true);
+                new DokterView().setVisible(true);
             }
         });
     }

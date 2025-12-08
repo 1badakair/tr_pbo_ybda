@@ -167,20 +167,20 @@ public class LoginView extends javax.swing.JFrame {
         switch (cekLogin){
             case "admin": 
                 JOptionPane.showMessageDialog(this, "Login Berhasil!!");
-                AdminView dav = new AdminView();
-                dav.setVisible(true);
+                AdminView av = new AdminView(this.txtUsername.getText());
+                av.setVisible(true);
                 this.setVisible(false);
                 break;
             case "dokter": 
                 JOptionPane.showMessageDialog(this, "Login Berhasil!!");
-                DashboardDokterView ddv = new DashboardDokterView();
-                ddv.setVisible(true);
+                DokterView dv = new DokterView(this.txtUsername.getText());
+                dv.setVisible(true);
                 this.setVisible(false);
                 break;
             case "pasien": 
                 JOptionPane.showMessageDialog(this, "Login Berhasil!!");
-                DashboardPasienView dpv = new DashboardPasienView();
-                dpv.setVisible(true);
+                PasienView pv = new PasienView();
+                pv.setVisible(true);
                 this.setVisible(false);
                 break;
             default:
