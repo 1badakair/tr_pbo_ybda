@@ -3,23 +3,114 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package View;
-
+import Controller.PasienController;
+import Model.Pasien;
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author LENOVO
  */
 public class PasienView extends javax.swing.JFrame {
-    
+    PasienController controller;
    
     /**
      * Creates new form DashboardUserView
      */
     public PasienView() {
         initComponents();
+        controller = new PasienController(); // Inisialisasi Controller
+        myCustomInit();
     }   
       
+    private void myCustomInit() {
+       // 1. Set Model Tabel agar nyambung ke Controller
+    // Ini PENTING: Kita ambil dtm (DefaultTableModel) dari controller
+    tabelStatus.setModel(controller.createTable());
+    
+    // 2. Load data awal dari database saat aplikasi dibuka
+    controller.tampilkanPasien();
+    
+    // 3. Posisikan layar di tengah
+    setLocationRelativeTo(null); 
+    }
+    
+    // --- METHOD UNTUK MEMBERSIHKAN FORM ---
+    private void bersihkanForm() {
+        txtNama.setText("");
+        txtKeluhan.setText("");
+        cmbDokter.setSelectedIndex(0);
+        spinnerTanggal.setValue(new java.util.Date()); // Reset tanggal ke hari ini
+        txtNama.requestFocus(); // Fokuskan kursor ke nama
+    }
+    
+    // Pindahkan logika ini ke Event "ActionPerformed" tombol Kirim
+
+    public void aksiSimpanJanji() {
+        // 1. Ambil data dari form
+        // UBAH BARIS INI: Jangan pakai "Pasien Test", tapi ambil dari txtNama
+        String namaPasien = txtNama.getText(); 
+        String Keluhan = getKeluhan();
+
+        // Validasi: Pastikan nama tidak kosong
+        if (namaPasien.isEmpty() || Keluhan.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Nama dan Keluhan wajib diisi!");
+            return;
+        }
+
+        // 2. Panggil Controller untuk Simpan
+        // Method tambahPasien me-return true jika berhasil
+        boolean berhasil = controller.tambahPasien(namaPasien, Keluhan);
+
+        if (berhasil) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Janji Temu Berhasil Dibuat!");
+
+            // 3. Reset Form
+            txtNama.setText("");      // Kosongkan nama
+            txtKeluhan.setText("");   // Kosongkan keluhan
+            
+            // 4. Refresh Tabel di Tab Sebelah
+            controller.tampilkanPasien();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Gagal menyimpan data.");
+        }
+    }
     
     
+
+    // --- TEMPELKAN INI DI BAGIAN BAWAH CLASS ---
+
+
+    // Mengambil teks dari inputan Keluhan
+
+    public String getKeluhan() {
+
+        return txtKeluhan.getText();
+
+    }
+
+
+    // Mengambil tanggal dari Spinner
+
+    public java.sql.Date getTanggal() {
+
+        java.util.Date utilDate = (java.util.Date) spinnerTanggal.getValue();
+
+        return new java.sql.Date(utilDate.getTime());
+
+    }
+
+
+    // Mengambil nama dokter dari ComboBox
+
+    public String getNamaDokter() {
+
+        return cmbDokter.getSelectedItem().toString();
+
+    }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -37,15 +128,18 @@ public class PasienView extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtKeluhan = new javax.swing.JTextArea();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        cmbDokter = new javax.swing.JComboBox<>();
+        btnClear = new javax.swing.JButton();
         spinnerTanggal = new javax.swing.JSpinner();
+        jLabel7 = new javax.swing.JLabel();
+        txtNama = new javax.swing.JTextField();
+        btnKirimPermintaan = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabelStatus = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
 
@@ -74,10 +168,10 @@ public class PasienView extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(51, 51, 51));
         jLabel3.setText("Tuliskan Keluhan Anda :");
 
-        jTextArea1.setBackground(new java.awt.Color(204, 255, 255));
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtKeluhan.setBackground(new java.awt.Color(204, 255, 255));
+        txtKeluhan.setColumns(20);
+        txtKeluhan.setRows(5);
+        jScrollPane1.setViewportView(txtKeluhan);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(51, 51, 51));
@@ -87,40 +181,64 @@ public class PasienView extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(51, 51, 51));
         jLabel5.setText("Pilih Dokter yang tersedia :");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dokter Spesialis Anak (Pediatri - Sp.A)", "Dokter Spesialis Penyakit Dalam  (Internis - Sp.PD)", "Dokter Spesialis Bedah (Sp.B)", "Dokter Spesialis Kebidanan dan Kandungan (Obstetri & Ginekologi - Sp.OG)", "Dokter Spesialis Saraf (Neurologi - Sp.S)", "Dokter Spesialis Kulit dan Kelamin (Dermatovenereologi - Sp.KK/Sp.DV)", "Dokter Spesialis Mata (Ophthalmology - Sp.M)", "Dokter Spesialis Telinga Hidung Tenggorokan (THT - Sp.THT-KL)", "Dokter Spesialis Jiwa (Psikiatri - Sp.KJ)", "Dokter Spesialis Jantung dan Pembuluh Darah (Kardiologi - Sp.JP)", "Dokter Spesialis Paru (Pulmonologi - Sp.P)" }));
+        cmbDokter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dokter Spesialis Anak (Pediatri - Sp.A)", "Dokter Spesialis Penyakit Dalam  (Internis - Sp.PD)", "Dokter Spesialis Bedah (Sp.B)", "Dokter Spesialis Kebidanan dan Kandungan (Obstetri & Ginekologi - Sp.OG)", "Dokter Spesialis Saraf (Neurologi - Sp.S)", "Dokter Spesialis Kulit dan Kelamin (Dermatovenereologi - Sp.KK/Sp.DV)", "Dokter Spesialis Mata (Ophthalmology - Sp.M)", "Dokter Spesialis Telinga Hidung Tenggorokan (THT - Sp.THT-KL)", "Dokter Spesialis Jiwa (Psikiatri - Sp.KJ)", "Dokter Spesialis Jantung dan Pembuluh Darah (Kardiologi - Sp.JP)", "Dokter Spesialis Paru (Pulmonologi - Sp.P)" }));
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 153));
-        jButton1.setForeground(new java.awt.Color(51, 51, 51));
-        jButton1.setText("Kirim Permintaan");
+        btnClear.setBackground(new java.awt.Color(255, 255, 153));
+        btnClear.setForeground(new java.awt.Color(51, 51, 51));
+        btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
 
         spinnerTanggal.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(1765180983001L), new java.util.Date(1765180983001L), new java.util.Date(1765180983001L), java.util.Calendar.DAY_OF_MONTH));
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel7.setText("Nama Anda :");
+
+        txtNama.setBackground(new java.awt.Color(204, 255, 255));
+
+        btnKirimPermintaan.setBackground(new java.awt.Color(255, 255, 153));
+        btnKirimPermintaan.setForeground(new java.awt.Color(51, 51, 51));
+        btnKirimPermintaan.setText("Kirim Permintaan");
+        btnKirimPermintaan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnKirimPermintaanActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 879, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnKirimPermintaan, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 856, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(spinnerTanggal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addComponent(cmbDokter, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(jLabel3))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 856, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(spinnerTanggal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 11, Short.MAX_VALUE)))
+                                .addGap(2, 2, 2)
+                                .addComponent(jLabel3)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -128,7 +246,11 @@ public class PasienView extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(jLabel2)
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtNama, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -139,9 +261,11 @@ public class PasienView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cmbDokter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(67, 67, 67)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnKirimPermintaan, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -149,8 +273,8 @@ public class PasienView extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(144, 224, 239));
 
-        jTable1.setBackground(new java.awt.Color(204, 255, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelStatus.setBackground(new java.awt.Color(204, 255, 255));
+        tabelStatus.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -161,7 +285,7 @@ public class PasienView extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable1);
+        jScrollPane2.setViewportView(tabelStatus);
 
         jLabel6.setFont(new java.awt.Font("Bahnschrift", 1, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
@@ -234,6 +358,59 @@ public class PasienView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnKirimPermintaanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKirimPermintaanActionPerformed
+        aksiSimpanJanji();
+    }//GEN-LAST:event_btnKirimPermintaanActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        bersihkanForm();
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    // 3. TOMBOL KIRIM PERMINTAAN (Di Tab Formulir)
+    // Di sini logika simpan data yang benar
+    private void btnKirim1ActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        
+        // A. Ambil Data dari Form
+        String nama = txtNama.getText();
+        String keluhan = txtKeluhan.getText();
+        
+        // (Opsional) Ambil Tanggal & Dokter 
+        // Note: Controller kamu saat ini baru support (Nama & Keluhan). 
+        // Tanggal & Dokter kita ambil dulu supaya tidak error, nanti bisa diupdate ke DB.
+        java.util.Date date = (java.util.Date) spinnerTanggal.getValue();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tanggal = sdf.format(date);
+        String dokter = cmbDokter.getSelectedItem().toString();
+
+        // B. Validasi Input Kosong
+        if (nama.isEmpty() || keluhan.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nama dan Keluhan tidak boleh kosong!");
+            return; // Stop proses jika kosong
+        }
+
+        // C. Panggil Controller untuk Simpan ke Database
+        // Sesuai controller kamu yang cuma terima 2 parameter:
+        boolean berhasil = controller.tambahPasien(nama, keluhan);
+        
+        // D. Cek Hasil
+        if (berhasil) {
+            JOptionPane.showMessageDialog(this, "Janji Temu Berhasil Dibuat!");
+            
+            // Bersihkan form setelah simpan
+            bersihkanForm();
+            
+            // Refresh tabel di tab sebelah agar data baru muncul
+            controller.tampilkanPasien(); 
+        } else {
+            JOptionPane.showMessageDialog(this, "Gagal menyimpan data ke Database.");
+        }
+    }                                         
+
+    private void txtNamaActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        // Biasanya kosong, atau bisa dipakai untuk pindah fokus ke kolom berikutnya
+        txtKeluhan.requestFocus();
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -273,23 +450,26 @@ public class PasienView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnKirimPermintaan;
+    private javax.swing.JComboBox<String> cmbDokter;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JSpinner spinnerTanggal;
+    private javax.swing.JTable tabelStatus;
+    private javax.swing.JTextArea txtKeluhan;
+    private javax.swing.JTextField txtNama;
     // End of variables declaration//GEN-END:variables
 }
