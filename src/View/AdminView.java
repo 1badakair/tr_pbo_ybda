@@ -4,6 +4,9 @@
  */
 package View;
 
+import Controller.JadwalController;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author LENOVO
@@ -17,7 +20,22 @@ public class AdminView extends javax.swing.JFrame {
         initComponents();
     }
     
-    public AdminView(String username){
+    public AdminView(String nama_admin){
+        initComponents();
+        this.jLabel1.setText("Selamat Datang "+ nama_admin);
+        
+         // Agar ketika form dashboard di Load, tabelnya auto terisi
+        JadwalController jdc = new JadwalController();
+        DefaultTableModel dtm = jdc.createTable();
+        
+        // Menerapkan desain tabel (virtual) ke TabelSelect (tabel benaran)
+        this.TableTambah.setModel(dtm);
+        this.TableUpdate.setModel(dtm);
+        this.TableHapus.setModel(dtm);
+        
+        // Panggil method tampilkanAnggota
+        jdc.tampilkanJadwal();
+        
         
     }
     
@@ -34,10 +52,10 @@ public class AdminView extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTabbedPane4 = new javax.swing.JTabbedPane();
+        Jpannel = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TableTambah = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -48,7 +66,7 @@ public class AdminView extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        TableUpdate = new javax.swing.JTable();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jTextField9 = new javax.swing.JTextField();
@@ -59,7 +77,7 @@ public class AdminView extends javax.swing.JFrame {
         jComboBox2 = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        TableHapus = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -80,12 +98,12 @@ public class AdminView extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("KELOLA JADWAL");
 
-        jTabbedPane4.setBackground(new java.awt.Color(255, 255, 153));
+        Jpannel.setBackground(new java.awt.Color(255, 255, 153));
 
         jPanel2.setBackground(new java.awt.Color(144, 224, 239));
 
-        jTable1.setBackground(new java.awt.Color(204, 255, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TableTambah.setBackground(new java.awt.Color(204, 255, 255));
+        TableTambah.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -96,7 +114,7 @@ public class AdminView extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(TableTambah);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Nama             :");
@@ -166,13 +184,13 @@ public class AdminView extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane4.addTab("Tambah", jPanel2);
+        Jpannel.addTab("Tambah", jPanel2);
 
         jPanel3.setBackground(new java.awt.Color(144, 224, 239));
         jPanel3.setForeground(new java.awt.Color(0, 180, 216));
 
-        jTable3.setBackground(new java.awt.Color(204, 255, 255));
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        TableUpdate.setBackground(new java.awt.Color(204, 255, 255));
+        TableUpdate.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -183,7 +201,7 @@ public class AdminView extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane3.setViewportView(jTable3);
+        jScrollPane3.setViewportView(TableUpdate);
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel14.setText("Spesialisai Baru :");
@@ -255,12 +273,12 @@ public class AdminView extends javax.swing.JFrame {
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
-        jTabbedPane4.addTab("Update", jPanel3);
+        Jpannel.addTab("Update", jPanel3);
 
         jPanel4.setBackground(new java.awt.Color(144, 224, 239));
 
-        jTable4.setBackground(new java.awt.Color(204, 255, 255));
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        TableHapus.setBackground(new java.awt.Color(204, 255, 255));
+        TableHapus.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -271,7 +289,7 @@ public class AdminView extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane4.setViewportView(jTable4);
+        jScrollPane4.setViewportView(TableHapus);
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setText("Nama              : ");
@@ -360,7 +378,7 @@ public class AdminView extends javax.swing.JFrame {
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
-        jTabbedPane4.addTab("Hapus", jPanel4);
+        Jpannel.addTab("Hapus", jPanel4);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -372,7 +390,7 @@ public class AdminView extends javax.swing.JFrame {
                 .addGap(31, 31, 31))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(47, 47, 47)
-                .addComponent(jTabbedPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 804, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Jpannel, javax.swing.GroupLayout.PREFERRED_SIZE, 804, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -381,7 +399,7 @@ public class AdminView extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Jpannel, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
@@ -445,6 +463,10 @@ public class AdminView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cl;
+    private javax.swing.JTabbedPane Jpannel;
+    private javax.swing.JTable TableHapus;
+    private javax.swing.JTable TableTambah;
+    private javax.swing.JTable TableUpdate;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -474,10 +496,6 @@ public class AdminView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTabbedPane jTabbedPane4;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
     private javax.swing.JTextField jTextField13;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField9;

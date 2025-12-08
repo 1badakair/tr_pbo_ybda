@@ -4,10 +4,12 @@
  */
 package Controller;
 
-/**
- *
- * @author ASUS
- */
+import javax.swing.table.DefaultTableModel;
+
 public class JanjiController {
+
+    public DefaultTableModel createTable() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }
