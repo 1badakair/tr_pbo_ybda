@@ -1,13 +1,16 @@
 package Controller;
 
 import Model.Pasien;
+import Utility.ComboItem;
 import Utility.Koneksi;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 public class PasienController {
-
+    Koneksi db;
     public Statement stm;
     public ResultSet res;
     public String sql;
@@ -17,10 +20,11 @@ public class PasienController {
 
     // Konstruktor
     public PasienController() {
-        Koneksi db = new Koneksi();
-        db.config();
-        this.stm = db.stm;
-    }
+    this.db = new Koneksi();   // <-- pakai this.db
+    this.db.config();
+    this.stm = this.db.stm;
+}
+
 
     // Method 1: Membuat model / desain tabel virtual
     public DefaultTableModel createTable() {
@@ -126,4 +130,44 @@ public class PasienController {
             return false;
         }
     }
+    public ResultSet getJadwalDokter(String idDokter) {
+    try {
+        // id_dokter bertipe VARCHAR(10) ⇒ WAJIB pakai tanda kutip
+        this.sql = "SELECT * FROM tb_jadwal WHERE id_dokter = '" + idDokter + "'";
+
+        return this.stm.executeQuery(this.sql);
+
+    } catch (Exception e) {
+        System.out.println("Error load jadwal: " + e.getMessage());
+        return null;
+    }
 }
+public List<ComboItem> getSemuaDokterCombo() {
+    List<ComboItem> list = new ArrayList<>();
+
+    try {
+        this.sql = "SELECT * FROM tb_dokter";
+        ResultSet rs = this.stm.executeQuery(this.sql);
+
+        while (rs.next()) {
+            String id        = rs.getString("id_dokter");
+            String nama      = rs.getString("nama_dokter");
+            String spesialis = rs.getString("spesialisasi");
+
+            list.add(new ComboItem(id, nama + " (" + spesialis + ")"));
+        }
+
+        rs.close();
+
+    } catch (Exception e) {
+        System.out.println("Error getSemuaDokterCombo: " + e.getMessage());
+    }
+
+    return list;
+}
+
+
+
+
+}
+
