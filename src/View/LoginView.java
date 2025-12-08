@@ -161,7 +161,7 @@ public class LoginView extends javax.swing.JFrame {
         switch (cekLogin){
             case "admin": 
                 JOptionPane.showMessageDialog(this, "Login Berhasil!!");
-                DashboardAdminView dav = new DashboardAdminView();
+                AdminView dav = new AdminView();
                 dav.setVisible(true);
                 this.setVisible(false);
                 break;
