@@ -127,11 +127,11 @@
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="spnJamMulai" min="-2" pref="145" max="-2" attributes="0"/>
+                                      <Component id="spJamMulai" min="-2" pref="145" max="-2" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                               <Component id="spTanggal" pref="145" max="32767" attributes="0"/>
-                                              <Component id="spnJamSelesai" max="32767" attributes="0"/>
+                                              <Component id="spJamSelesai" max="32767" attributes="0"/>
                                           </Group>
                                           <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                                           <Component id="btnTambah" min="-2" max="-2" attributes="0"/>
@@ -155,13 +155,13 @@
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="spnJamMulai" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="spJamMulai" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="spnJamSelesai" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="spJamSelesai" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
@@ -242,13 +242,13 @@
                     <Property name="text" type="java.lang.String" value="Jam Selesai          : "/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JSpinner" name="spnJamSelesai">
+                <Component class="javax.swing.JSpinner" name="spJamSelesai">
                   <Properties>
                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE)" type="code"/>
                     </Property>
                     <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new javax.swing.JSpinner.DateEditor(spnJamSelesai, &quot;HH:mm&quot;)" type="code"/>
+                      <Connection code="new javax.swing.JSpinner.DateEditor(spJamSelesai, &quot;HH:mm&quot;)" type="code"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -263,13 +263,13 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTambahActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JSpinner" name="spnJamMulai">
+                <Component class="javax.swing.JSpinner" name="spJamMulai">
                   <Properties>
                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE)" type="code"/>
                     </Property>
                     <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new javax.swing.JSpinner.DateEditor(spnJamMulai, &quot;HH:mm&quot;)" type="code"/>
+                      <Connection code="new javax.swing.JSpinner.DateEditor(spJamMulai, &quot;HH:mm&quot;)" type="code"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -338,12 +338,12 @@
                                               <Group type="102" attributes="0">
                                                   <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="spnUJamSelesai" min="-2" pref="145" max="-2" attributes="0"/>
+                                                  <Component id="spUJamSelesai" min="-2" pref="145" max="-2" attributes="0"/>
                                               </Group>
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="spnUJamMulai" min="-2" pref="145" max="-2" attributes="0"/>
+                                                  <Component id="spUJamMulai" min="-2" pref="145" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                           <EmptySpace min="-2" pref="107" max="-2" attributes="0"/>
@@ -378,13 +378,13 @@
                                       </Group>
                                       <Group type="103" alignment="1" groupAlignment="3" attributes="0">
                                           <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="spnUJamMulai" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="spUJamMulai" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="spnUJamSelesai" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="spUJamSelesai" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="103" alignment="1" groupAlignment="3" attributes="0">
@@ -443,23 +443,23 @@
                     <Property name="text" type="java.lang.String" value="Jam Selesai          : "/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JSpinner" name="spnUJamMulai">
+                <Component class="javax.swing.JSpinner" name="spUJamMulai">
                   <Properties>
                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE)" type="code"/>
                     </Property>
                     <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new javax.swing.JSpinner.DateEditor(spnUJamMulai, &quot;HH:mm&quot;)" type="code"/>
+                      <Connection code="new javax.swing.JSpinner.DateEditor(spUJamMulai, &quot;HH:mm&quot;)" type="code"/>
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JSpinner" name="spnUJamSelesai">
+                <Component class="javax.swing.JSpinner" name="spUJamSelesai">
                   <Properties>
                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE)" type="code"/>
                     </Property>
                     <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new javax.swing.JSpinner.DateEditor(spnUJamSelesai, &quot;HH:mm&quot;)" type="code"/>
+                      <Connection code="new javax.swing.JSpinner.DateEditor(spUJamSelesai, &quot;HH:mm&quot;)" type="code"/>
                     </Property>
                   </Properties>
                 </Component>

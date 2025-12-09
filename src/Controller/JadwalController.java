@@ -1,12 +1,11 @@
 package Controller;
 
 import Model.Jadwal;
-import Model.User;
 import Utility.Koneksi;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.sql.Date;
+import java.sql.Time;
 import javax.swing.table.DefaultTableModel;
 
 public class JadwalController {
@@ -65,7 +64,7 @@ public class JadwalController {
     }
 
     // ==================== Method 3: INSERT jadwal ====================
-    public boolean tambahJadwalDokter(int k, LocalTime jm, LocalTime js, LocalDate t) {
+    public boolean tambahJadwalDokter(int k, Time jm, Time js, Date t) {
         // Hubungkan dengan model Jadwal
         Jadwal ja = new Jadwal();
 
@@ -90,7 +89,7 @@ public class JadwalController {
     }
 
     // ==================== Method 4: UPDATE jadwal ====================
-    public boolean ubahJadwalDokter(int k, LocalTime jm, LocalTime js, LocalDate t, int ij) {
+    public boolean ubahJadwalDokter(int k, Time jm, Time js, Date t, int ij) {
         Jadwal ja = new Jadwal();
 
         ja.setKuota(k);

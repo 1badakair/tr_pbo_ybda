@@ -1,15 +1,15 @@
 
 package Model;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.sql.Date;
+import java.sql.Time;
 
 public class Jadwal {
     private int id_jadwal;
     private String id_dokter;
-    private LocalDate tanggal;
-    private LocalTime jam_mulai;
-    private LocalTime jam_selesai;
+    private Date tanggal;
+    private Time jam_mulai;
+    private Time jam_selesai;
     private int kuota;
 
     public int getId_jadwal() {
@@ -28,27 +28,27 @@ public class Jadwal {
         this.id_dokter = id_dokter;
     }
 
-    public LocalDate getTanggal() {
+    public Date getTanggal() {
         return tanggal;
     }
 
-    public void setTanggal(LocalDate tanggal) {
+    public void setTanggal(Date tanggal) {
         this.tanggal = tanggal;
     }
 
-    public LocalTime getJam_mulai() {
+    public Time getJam_mulai() {
         return jam_mulai;
     }
 
-    public void setJam_mulai(LocalTime jam_mulai) {
+    public void setJam_mulai(Time jam_mulai) {
         this.jam_mulai = jam_mulai;
     }
 
-    public LocalTime getJam_selesai() {
+    public Time getJam_selesai() {
         return jam_selesai;
     }
 
-    public void setJam_selesai(LocalTime jam_selesai) {
+    public void setJam_selesai(Time jam_selesai) {
         this.jam_selesai = jam_selesai;
     }
 
@@ -59,9 +59,4 @@ public class Jadwal {
     public void setKuota(int kuota) {
         this.kuota = kuota;
     }
-
-    public void setSpesialisasi(String s) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
 }
