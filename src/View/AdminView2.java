@@ -481,7 +481,7 @@ public class AdminView2 extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        int getAnswer = JOptionPane.showConfirmDialog(rootPane, "Apakah anda ingin pindah keJadwal?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        int getAnswer = JOptionPane.showConfirmDialog(rootPane, "Apakah anda ingin pindah ke Jadwal?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
         switch (getAnswer) {
             case 0:
                 try {
