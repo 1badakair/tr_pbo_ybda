@@ -6,6 +6,7 @@ package View;
 
 import Controller.DokterController;
 import Controller.JadwalController;
+import Controller.JadwalDokterController;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -20,22 +21,20 @@ public class DokterView extends javax.swing.JFrame {
     public DokterView() {
         initComponents();
     }
-    
-    public DokterView(String nama_dokter){
+
+    public DokterView(String idDokter, String nama_dokter) {
         initComponents();
-        this.jLabel1.setText("Selamat Datang "+ nama_dokter);
-        
-         // Agar ketika form dashboard di Load, tabelnya auto terisi
-        JadwalController jc = new JadwalController();
+
+        this.jLabel1.setText("Selamat Datang " + nama_dokter);
+        this.jLabel3.setText(nama_dokter);
+
+        JadwalDokterController jc = new JadwalDokterController(idDokter);
         DefaultTableModel dtm = jc.createTable();
-        
-        // Menerapkan desain tabel (virtual) ke TabelSelect (tabel benaran)
+
         this.TabelTambah.setModel(dtm);
         this.TabelUpdate.setModel(dtm);
-//        this.TabelHapus.setModel(dtm);
-        
-        // Panggil method tampilkanAnggota
-        jc.tampilkanJadwal();
+
+        jc.tampilkanJadwalDokter();
     }
 
     /**
@@ -63,6 +62,7 @@ public class DokterView extends javax.swing.JFrame {
         jSpinner3 = new javax.swing.JSpinner();
         jSpinner7 = new javax.swing.JSpinner();
         jLabel7 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -138,6 +138,8 @@ public class DokterView extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Tanggal          : ");
 
+        jLabel3.setText("jLabel3");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -147,8 +149,11 @@ public class DokterView extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -181,7 +186,8 @@ public class DokterView extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(jLabel5)
-                            .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
@@ -511,6 +517,7 @@ public class DokterView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

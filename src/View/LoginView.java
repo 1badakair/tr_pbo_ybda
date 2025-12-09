@@ -158,35 +158,41 @@ public class LoginView extends javax.swing.JFrame {
         //Menghubungkan objek
         AuthController auth = new AuthController();
 
-        String cekLogin = auth.cekLogin(this.txtUsername.getText(), this.txtPassword.getText());
-        
-        if (cekLogin == null) {
-            JOptionPane.showMessageDialog(this, "Login Gagal: username atau password salah");
+        String role = auth.cekLogin(txtUsername.getText(), txtPassword.getText());
+
+        if (role == null) {
+            JOptionPane.showMessageDialog(this, "Login gagal");
             return;
         }
-        switch (cekLogin){
-            case "admin": 
+
+        switch (role) {
+            case "dokter":
                 JOptionPane.showMessageDialog(this, "Login Berhasil!!");
-                AdminView av = new AdminView(this.txtUsername.getText());
-                av.setVisible(true);
-                this.setVisible(false);
-                break;
-            case "dokter": 
-                JOptionPane.showMessageDialog(this, "Login Berhasil!!");
-                DokterView dv = new DokterView(this.txtUsername.getText());
+
+                int userId = auth.getLoggedUserId(); // id_user dokter
+                String idDokter = auth.getIdDokterByUserId(userId);
+                String namaDokter = auth.getNamaDokterByUserId(userId); // AMBIL NAMA DOKTER
+
+                DokterView dv = new DokterView(idDokter, namaDokter);
                 dv.setVisible(true);
                 this.setVisible(false);
                 break;
-            case "pasien": 
-                JOptionPane.showMessageDialog(this, "Login Berhasil!!");
+
+            case "admin":
+                JOptionPane.showMessageDialog(this, "Login berhasil");
+                AdminView av = new AdminView(txtUsername.getText());
+                av.setVisible(true);
+                this.setVisible(false);
+                break;
+
+            case "pasien":
+                JOptionPane.showMessageDialog(this, "Login berhasil");
                 PasienView pv = new PasienView();
                 pv.setVisible(true);
                 this.setVisible(false);
                 break;
-            default:
-                JOptionPane.showMessageDialog(this, "Role tidak dikenal,,,");
         }
-                
+
 //        if (cekLogin == true) {
 //            JOptionPane.showMessageDialog(this, "Login Berhasil!!");
 //            DashboardAdminView dsh = new DashboardAdminView(this.txtUsername.getText());

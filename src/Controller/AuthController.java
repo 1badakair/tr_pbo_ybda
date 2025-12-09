@@ -8,11 +8,13 @@ import java.sql.Statement;
 
 public class AuthController {
 
-    public Statement stm;     // dipertahankan agar gaya serupa kode lama
+    public Statement stm;
     public ResultSet res;
     public String sql;
 
-    // konstruktor
+    // simpan id_user sementara agar bisa diambil setelah login
+    private int loggedUserId = 0;
+
     public AuthController() {
         Koneksi db = new Koneksi();
         db.config();
@@ -20,39 +22,66 @@ public class AuthController {
     }
 
     public String cekLogin(String username, String plainPassword) {
-        // Dipetakan dengan model
         User usr = new User();
-        usr.setUsername(username);
+        usr.setUsername(username);   // kamu tetap boleh pakai ini
 
-        // Query ke database + cek
         try {
-            // SQL query
             this.sql = "SELECT * FROM tb_user WHERE username = '" + usr.getUsername() + "'";
-
-            // Menjalankan query
-            // Khusus SELECT gunakan 'executeQuery'
             this.res = this.stm.executeQuery(sql);
-            
-            // Pengecekan
+
             if (res.next()) {
                 String passwordHash = res.getString("password_hash");
-                boolean pw_verify = Utility.PasswordHash.verify(plainPassword, passwordHash);
+                boolean pw_verify = PasswordHash.verify(plainPassword, passwordHash);
+
                 if (!pw_verify) {
                     System.out.println("Password salah!");
                     return null;
                 }
-                
+
+                // SIMPAN id_user agar bisa dipakai getIdDokterByUserId()
+                this.loggedUserId = res.getInt("id_user");
+
                 String role = res.getString("role");
-                if (role != null) {
-                    return role;
-                } else {
-                    return null;
-                }
+                return role != null ? role : null;
             } else {
                 System.out.println("Data tidak ditemukan");
             }
+
         } catch (Exception e) {
-            System.out.println("Query gagal");
+            System.out.println("Query gagal: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    // Getter untuk mengambil id_user setelah login
+    public int getLoggedUserId() {
+        return this.loggedUserId;
+    }
+
+    // cari id_dokter dari id_user
+    public String getIdDokterByUserId(int id_user) {
+        try {
+            this.sql = "SELECT id_dokter FROM tb_dokter WHERE id_user = " + id_user;
+            this.res = this.stm.executeQuery(sql);
+            if (res.next()) {
+                return res.getString("id_dokter");
+            }
+        } catch (Exception e) {
+            System.out.println("Error getIdDokter: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public String getNamaDokterByUserId(int idUser) {
+        try {
+            this.sql = "SELECT nama_dokter FROM tb_dokter WHERE id_user = " + idUser;
+            this.res = this.stm.executeQuery(sql);
+            if (res.next()) {
+                return res.getString("nama_dokter");
+            }
+        } catch (Exception e) {
+            System.out.println("Error getNamaDokter: " + e.getMessage());
         }
         return null;
     }
