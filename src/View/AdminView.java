@@ -4,6 +4,7 @@
  */
 package View;
 
+import Controller.DokterController;
 import Controller.JadwalController;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -20,27 +21,23 @@ public class AdminView extends javax.swing.JFrame {
     public AdminView() {
         initComponents();
     }
-    
-    public AdminView(String nama_admin){
+
+    public AdminView(String nama_admin) {
         initComponents();
-        this.jLabel1.setText("Selamat Datang "+ nama_admin);
-        
-         // Agar ketika form dashboard di Load, tabelnya auto terisi
-        JadwalController jdc = new JadwalController();
-        DefaultTableModel dtm = jdc.createTable();
-        
+        this.jLabel1.setText("Selamat Datang " + nama_admin);
+
+        // Agar ketika form dashboard di Load, tabelnya auto terisi
+        DokterController dc = new DokterController();
+        DefaultTableModel dtm = dc.createTable();
+
         // Menerapkan desain tabel (virtual) ke TabelSelect (tabel benaran)
         this.TableTambah.setModel(dtm);
         this.TableUpdate.setModel(dtm);
         this.TableHapus.setModel(dtm);
-        
+
         // Panggil method tampilkanAnggota
-        jdc.tampilkanJadwal();
-        
-        
+        dc.tampilkanDokter();
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,11 +58,11 @@ public class AdminView extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        txtNama = new javax.swing.JTextField();
+        txtId = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         Cl = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        txtNama1 = new javax.swing.JTextField();
+        cmbSpesialis = new javax.swing.JComboBox<>();
+        txtNama = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -132,10 +129,15 @@ public class AdminView extends javax.swing.JFrame {
 
         jButton1.setBackground(new java.awt.Color(255, 255, 153));
         jButton1.setText("Tambah");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         Cl.setText("Clear");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dokter Spesialis Anak (Pediatri - Sp.A)", "Dokter Spesialis Penyakit Dalam  (Internis - Sp.PD)", "Dokter Spesialis Bedah (Sp.B)", "Dokter Spesialis Kebidanan dan Kandungan (Obstetri & Ginekologi - Sp.OG)", "Dokter Spesialis Saraf (Neurologi - Sp.S)", "Dokter Spesialis Kulit dan Kelamin (Dermatovenereologi - Sp.KK/Sp.DV)", "Dokter Spesialis Mata (Ophthalmology - Sp.M)", "Dokter Spesialis Telinga Hidung Tenggorokan (THT - Sp.THT-KL)", "Dokter Spesialis Jiwa (Psikiatri - Sp.KJ)", "Dokter Spesialis Jantung dan Pembuluh Darah (Kardiologi - Sp.JP)", "Dokter Spesialis Paru (Pulmonologi - Sp.P)" }));
+        cmbSpesialis.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Spesialis Anak", "Spesialis Penyakit Dalam", "Spesialis Bedah", "Spesialis Kebidanan dan Kandungan", "Spesialis Saraf", "Spesialis Kulit dan Kelamin", "Spesialis Mata", "Spesialis Telinga Hidung Tenggorokan", "Spesialis Jiwa", "Spesialis Jantung dan Pembuluh Darah", "Spesialis Paru" }));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("Spesialisasi      :");
@@ -158,11 +160,11 @@ public class AdminView extends javax.swing.JFrame {
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel5)
                                         .addGap(18, 18, 18)
-                                        .addComponent(txtNama1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -172,7 +174,7 @@ public class AdminView extends javax.swing.JFrame {
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel6)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                                        .addComponent(cmbSpesialis, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -183,15 +185,15 @@ public class AdminView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbSpesialis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(Cl)
                     .addComponent(jButton1)
-                    .addComponent(txtNama1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(104, 104, 104)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
@@ -460,15 +462,15 @@ public class AdminView extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-         // TODO add your handling code here:
+        // TODO add your handling code here:
         int getAnswer = JOptionPane.showConfirmDialog(rootPane, "Apakah yakin ingin keluar?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-        switch(getAnswer){
+        switch (getAnswer) {
             case 0:
-                try{
-                     LoginView lv = new LoginView();
-                     this.dispose();
-                     lv.setVisible(true);
-                }catch(Exception e){
+                try {
+                    LoginView lv = new LoginView();
+                    this.dispose();
+                    lv.setVisible(true);
+                } catch (Exception e) {
                     System.out.println("Error : " + e.getMessage());
                 }
                 break;
@@ -476,6 +478,35 @@ public class AdminView extends javax.swing.JFrame {
                 break;
         }
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        // Menghubungkan dengan Controller
+        DokterController dc = new DokterController();
+
+        // Persiapan nilai
+        String a = this.txtId.getText();               // ID Dokter
+        String b = this.txtId.getText();             // Nama Dokter
+        String c = this.cmbSpesialis.getSelectedItem().toString(); // Spesialisasi Dokter
+
+        // Memanggil method tambahDokter
+        boolean status = dc.tambahDokter(a, b, c);
+
+        if (status == true) {
+            // Autorefresh data di tabel
+            DefaultTableModel dtm = dc.createTable();
+            this.TableTambah.setModel(dtm);
+            this.TableUpdate.setModel(dtm);
+            this.TableHapus.setModel(dtm);
+            dc.tampilkanDokter();
+
+            JOptionPane.showMessageDialog(this, "Berhasil menambah data Dokter");
+        } else {
+            JOptionPane.showMessageDialog(this, "Gagal menambah data Dokter");
+        }
+
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -519,6 +550,7 @@ public class AdminView extends javax.swing.JFrame {
     private javax.swing.JTable TableHapus;
     private javax.swing.JTable TableTambah;
     private javax.swing.JTable TableUpdate;
+    private javax.swing.JComboBox<String> cmbSpesialis;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -526,7 +558,6 @@ public class AdminView extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -554,7 +585,7 @@ public class AdminView extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField13;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField9;
+    private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtNama;
-    private javax.swing.JTextField txtNama1;
     // End of variables declaration//GEN-END:variables
 }

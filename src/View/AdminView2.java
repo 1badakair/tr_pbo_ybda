@@ -4,6 +4,7 @@
  */
 package View;
 
+import Controller.DokterController;
 import Controller.JadwalController;
 import Controller.JadwalDokterController;
 import javax.swing.table.DefaultTableModel;
@@ -23,22 +24,26 @@ public class AdminView2 extends javax.swing.JFrame {
         initComponents();
     }
     
-    public AdminView2(String nama) {
+
+
+    public AdminView2(String nama_admin) {
         initComponents();
-        this.jLabel1.setText("Selamat Datang "+ nama);
-        
+        this.jLabel1.setText("Selamat Datang " + nama_admin);
+
         // Agar ketika form dashboard di Load, tabelnya auto terisi
-        JadwalController jc = new JadwalController();
-        DefaultTableModel dtm = jc.createTable();
-        
+        DokterController dc = new DokterController();
+        DefaultTableModel dtm = dc.createTable();
+
         // Menerapkan desain tabel (virtual) ke TabelSelect (tabel benaran)
         this.TableTambah.setModel(dtm);
         this.TableUpdate.setModel(dtm);
         this.TableHapus.setModel(dtm);
-        
+
         // Panggil method tampilkanAnggota
-        jc.tampilkanAnggota();
+        dc.tampilkanDokter();
     }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
