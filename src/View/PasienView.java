@@ -6,7 +6,7 @@ package View;
 
 import Controller.JanjiController;
 import Controller.PasienController;
-import Utility.ComboItem; // Wajib: Pastikan file ComboItem.java ada di package Utility
+import Utility.ComboItem;
 import Utility.UserSession;
 import java.sql.ResultSet;
 import java.util.List;
@@ -17,9 +17,15 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author LENOVO
  */
+
+
 public class PasienView extends javax.swing.JFrame {
     PasienController pasienController;
     JanjiController janjiController;
+    // untuk menyimpan hasil pilihan dialog
+    private int pickedIdJadwal = -1;
+    private String pickedJadwalText = null;
+
    
     /**
      * Creates new form DashboardUserView
@@ -29,8 +35,9 @@ public class PasienView extends javax.swing.JFrame {
         
         // --- SIMULASI SESSION (HAPUS JIKA SUDAH ADA LOGIN) ---
         // Jika belum login, kita paksa login sebagai user ID 4 (Pasien P001)
+        // Simulasi login jika belum ada session
         if (UserSession.getIdPasien() == null) {
-             UserSession.setUser(4, "P001", "Dhika Primanda", "pasien");
+            UserSession.setUser(4, "P001", "Dhika Primanda", "pasien");
         }
         // -----------------------------------------------------
         
@@ -46,137 +53,81 @@ public class PasienView extends javax.swing.JFrame {
         // 1. Tampilkan Nama User di Label
         lblTampilNama.setText("Halo, " + UserSession.getNama()); 
         
-        // 2. Load Data Dokter ke ComboBox
-        loadDokterCombo(); 
+         
         
         // 3. Load Data Tabel Status (Tab Sebelah)
         refreshTabelStatus(); 
         
         // 4. Posisikan layar di tengah
         setLocationRelativeTo(null); 
-        
-        // --- EVENT LISTENER UNTUK COMBOBOX DOKTER ---
-        // Saat dokter dipilih, otomatis cari jadwal beliau
-        cbPilihDokter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                // Ambil item dokter yang dipilih
-                Object selected = cbPilihDokter.getSelectedItem();
-                
-                // Pastikan yang dipilih adalah object ComboItem (bukan string null)
-                if (selected instanceof ComboItem) {
-                    ComboItem item = (ComboItem) selected;
-                    // Load jadwal berdasarkan ID Dokter (key)
-                    loadJadwalCombo(item.getKey());
-                }
-            }
-        });
     }
     
-    // --- METHOD: ISI COMBOBOX DOKTER ---
-private void loadDokterCombo() {
+    // ===============================
+// POPUP PILIH JADWAL
+// ===============================
+private void openPilihJadwalPopup() {
 
-    cbPilihDokter.removeAllItems();
-
-    List<ComboItem> dokterList = pasienController.getSemuaDokterCombo();
-
-    for (ComboItem d : dokterList) {
-        cbPilihDokter.addItem(d);
-    }
-
-    if (cbPilihDokter.getItemCount() > 0) {
-        cbPilihDokter.setSelectedIndex(0);
-    }
-}
-
-
-    
-    // --- METHOD: ISI COMBOBOX JADWAL ---
-    // Method ini dipanggil otomatis saat cbPilihDokter berubah
-    private void loadJadwalCombo(String idDokter) {
-    cbPilihJadwal.removeAllItems();   // bersihkan dulu
-
-    try {
-        ResultSet rs = pasienController.getJadwalDokter(idDokter);
-
-        boolean adaJadwal = false;
-
-        if (rs != null) {
-            while (rs.next()) {
-                adaJadwal = true;
-
-                String idJadwal = rs.getString("id_jadwal");
-                String tgl      = rs.getString("tanggal");
-                String jam      = rs.getString("jam_mulai");
-                String kuota    = rs.getString("kuota");
-
-                String tampilan = tgl + " | Jam " + jam + " | Sisa: " + kuota;
-
-                cbPilihJadwal.addItem(new ComboItem(idJadwal, tampilan));
-            }
-        }
-
-        if (!adaJadwal) {
-            cbPilihJadwal.addItem(new ComboItem("0", "-- Tidak ada jadwal --"));
-        }
-
-    } catch (Exception e) {
-        System.out.println("Error load jadwal: " + e.getMessage());
-        cbPilihJadwal.addItem(new ComboItem("0", "-- Error load jadwal --"));
-    }
-}
-
-
-    // --- LOGIKA UTAMA: TOMBOL KIRIM ---
-    public void aksiSimpanJanji() {
-    // 1. Ambil ID Pasien dari Session
-    String idPasien = UserSession.getIdPasien(); 
-        
-    // 2. Ambil Inputan
-    String nama = lblTampilNama.getText();   // <-- TAMBAHKAN INI
-    String keluhan = txtKeluhan.getText(); 
-        
-    // 3. Ambil ID Jadwal dari ComboBox
-    ComboItem selectedJadwal = (ComboItem) cbPilihJadwal.getSelectedItem();
-        
-    // --- VALIDASI ---
-    if (keluhan.trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Mohon isi keluhan Anda!");
+    // Pastikan label jadwal terpilih ada
+    if (lblJadwalTerpilih == null) {
+        System.out.println("Label lblJadwalTerpilih belum dibuat di Form!");
         return;
     }
-        
-    if (selectedJadwal == null || selectedJadwal.getKey().equals("0")) {
-         JOptionPane.showMessageDialog(this, "Jadwal tidak tersedia, silakan pilih dokter lain.");
-         return;
-    }
 
-    // Konversi ID Jadwal ke Integer
-    int idJadwalTarget = Integer.parseInt(selectedJadwal.getKey());
+    // Buat popup dialog PilihJadwal
+    PilihJadwal dialog = new PilihJadwal(
+            this, // owner (PasienView)
+            (idJadwal, summary) -> {  // CALLBACK dari popup
+                pickedIdJadwal = idJadwal;
+                pickedJadwalText = summary;
 
-    // 4. SIMPAN KE DATABASE
-    boolean berhasil = janjiController.tambahJanjiTemu(idJadwalTarget, idPasien, keluhan);
+                // Tampilkan hasil pilihan ke label
+                lblJadwalTerpilih.setText("Dipilih: " + summary);
+            }
+    );
 
-
-    if (berhasil) {
-        JOptionPane.showMessageDialog(this, "Berhasil! Janji Temu telah dibuat.");
-        bersihkanForm();
-        refreshTabelStatus();
-    } else {
-        JOptionPane.showMessageDialog(this, "Gagal menyimpan. Silakan coba lagi.");
-    }
+    dialog.setVisible(true); // Tampilkan dialog
 }
+
+    
+    // ================= KIRIM JANJI TEMU =================
+    public void aksiSimpanJanji() {
+        String idPasien = UserSession.getIdPasien();
+        String keluhan = txtKeluhan.getText().trim();
+
+        if (keluhan.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Mohon isi keluhan Anda!");
+            return;
+        }
+
+        if (pickedIdJadwal == -1) {
+            JOptionPane.showMessageDialog(this, "Silakan pilih jadwal terlebih dahulu!");
+            return;
+        }
+
+        boolean berhasil = janjiController.tambahJanjiTemu(pickedIdJadwal, idPasien, keluhan);
+
+        if (berhasil) {
+            JOptionPane.showMessageDialog(this, "Berhasil! Janji Temu telah dibuat.");
+
+            bersihkanForm();
+            refreshTabelStatus();
+        } else {
+            JOptionPane.showMessageDialog(this, "Gagal menyimpan. Silakan coba lagi.");
+        }
+    }
 
     // Method untuk membersihkan form input
     private void bersihkanForm() {
         txtKeluhan.setText("");
-        if (cbPilihDokter.getItemCount() > 0) cbPilihDokter.setSelectedIndex(0);
-        // cbPilihJadwal akan otomatis reset karena trigger dari dokter
+        pickedIdJadwal = -1;
+        pickedJadwalText = null;
+        lblJadwalTerpilih.setText("Belum memilih jadwal");
     }
+    
     
     // Method untuk me-refresh tabel status (Tab 2)
     private void refreshTabelStatus() {
-        // Pastikan variabel tabel kamu namanya 'tabelStatus'
-        // Jika error merah disini, ganti nama variabel tabelmu di Design
-        if (tabelStatus != null) {
+         if (tabelStatus != null) {
             tabelStatus.setModel(janjiController.createTable());
             janjiController.tampilkanRiwayat();
         }
@@ -186,9 +137,6 @@ private void loadDokterCombo() {
     DefaultTableModel model = (DefaultTableModel) tabelStatus.getModel();
     model.setRowCount(0); // hapus semua baris
 }
-
-    
-    // --- EVENT HANDLER TOMBOL DARI DESIGN ---
     
 
 
@@ -210,15 +158,13 @@ private void loadDokterCombo() {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtKeluhan = new javax.swing.JTextArea();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        cbPilihDokter = new javax.swing.JComboBox<>();
         btnClear = new javax.swing.JButton();
         btnKirimPermintaan = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
+        lblJadwal = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         lblTampilNama = new javax.swing.JLabel();
-        cbPilihJadwal = new javax.swing.JComboBox<>();
+        btnCariJadwal = new javax.swing.JButton();
+        lblJadwalTerpilih = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabelStatus = new javax.swing.JTable();
@@ -256,20 +202,6 @@ private void loadDokterCombo() {
         txtKeluhan.setRows(5);
         jScrollPane1.setViewportView(txtKeluhan);
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel4.setText("DD/MM/YYYY, HOUR");
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel5.setText("Pilih Dokter yang tersedia :");
-
-        cbPilihDokter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbPilihDokterActionPerformed(evt);
-            }
-        });
-
         btnClear.setBackground(new java.awt.Color(255, 255, 153));
         btnClear.setForeground(new java.awt.Color(51, 51, 51));
         btnClear.setText("Clear");
@@ -288,9 +220,9 @@ private void loadDokterCombo() {
             }
         });
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel8.setText("Pilih Jadwal :");
+        lblJadwal.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblJadwal.setForeground(new java.awt.Color(51, 51, 51));
+        lblJadwal.setText("Pilih Jadwal :");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(51, 51, 51));
@@ -299,6 +231,17 @@ private void loadDokterCombo() {
         lblTampilNama.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblTampilNama.setForeground(new java.awt.Color(51, 51, 51));
         lblTampilNama.setText("-");
+
+        btnCariJadwal.setText("Cari Jadwal");
+        btnCariJadwal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCariJadwalActionPerformed(evt);
+            }
+        });
+
+        lblJadwalTerpilih.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblJadwalTerpilih.setForeground(new java.awt.Color(51, 51, 51));
+        lblJadwalTerpilih.setText("Belum Memilih Jadwal.");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -310,39 +253,33 @@ private void loadDokterCombo() {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addComponent(jLabel7)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(lblTampilNama))
-                                            .addComponent(jLabel3))))
-                                .addGap(0, 722, Short.MAX_VALUE))
+                                        .addComponent(jLabel7)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lblTampilNama))
+                                    .addComponent(jLabel3))
+                                .addGap(0, 568, Short.MAX_VALUE))
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jScrollPane1))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(cbPilihDokter, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnCariJadwal, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(4, 4, 4)
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblJadwalTerpilih)
+                                            .addComponent(lblJadwal))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnKirimPermintaan, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(14, 14, 14))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(cbPilihJadwal, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1))
+                        .addGap(14, 14, 14))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -357,23 +294,16 @@ private void loadDokterCombo() {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cbPilihJadwal, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel5)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnKirimPermintaan, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbPilihDokter, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(lblJadwalTerpilih)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblJadwal)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCariJadwal, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(54, 54, 54)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnKirimPermintaan, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(16, 16, 16))
         );
 
@@ -418,8 +348,8 @@ private void loadDokterCombo() {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnClearTbl, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 891, Short.MAX_VALUE)
+                        .addComponent(btnClearTbl, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 723, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING))
                 .addContainerGap())
         );
@@ -429,10 +359,10 @@ private void loadDokterCombo() {
                 .addGap(12, 12, 12)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnClearTbl, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(btnClearTbl)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Status Janji Temu", jPanel3);
@@ -453,12 +383,15 @@ private void loadDokterCombo() {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 891, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnLogout)))
                 .addContainerGap())
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(84, 84, 84)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 735, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -467,9 +400,9 @@ private void loadDokterCombo() {
                 .addComponent(btnLogout)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 533, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(61, 61, 61))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -480,7 +413,7 @@ private void loadDokterCombo() {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -494,24 +427,19 @@ private void loadDokterCombo() {
         bersihkanForm();
     }//GEN-LAST:event_btnClearActionPerformed
 
-    private void cbPilihDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPilihDokterActionPerformed
-        ComboItem item = (ComboItem) cbPilihDokter.getSelectedItem();
-    if (item != null) {
-        loadJadwalCombo(item.getKey());  // key = id_dokter (D001, D002, ...)
-    }
-    }//GEN-LAST:event_cbPilihDokterActionPerformed
-
     private void btnClearTblActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearTblActionPerformed
         clearStatusTable();
     }//GEN-LAST:event_btnClearTblActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        UserSession.clear();  // kosongkan session
-
-    this.dispose();       // tutup dashboard
-
-    new LoginView().setVisible(true);  // kembali ke login
+        UserSession.clear();
+        new LoginView().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void btnCariJadwalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariJadwalActionPerformed
+       openPilihJadwalPopup();
+    }//GEN-LAST:event_btnCariJadwalActionPerformed
 
     
     /**
@@ -553,26 +481,24 @@ private void loadDokterCombo() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCariJadwal;
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnClearTbl;
     private javax.swing.JButton btnKirimPermintaan;
     private javax.swing.JButton btnLogout;
-    private javax.swing.JComboBox<ComboItem> cbPilihDokter;
-    private javax.swing.JComboBox<ComboItem> cbPilihJadwal;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel lblJadwal;
+    private javax.swing.JLabel lblJadwalTerpilih;
     private javax.swing.JLabel lblTampilNama;
     private javax.swing.JTable tabelStatus;
     private javax.swing.JTextArea txtKeluhan;
