@@ -129,12 +129,12 @@
                                               <Group type="102" attributes="0">
                                                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                  <Component id="txtNama1" min="-2" pref="250" max="-2" attributes="0"/>
+                                                  <Component id="txtNama" min="-2" pref="250" max="-2" attributes="0"/>
                                               </Group>
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Component id="jLabel2" min="-2" pref="104" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="txtNama" min="-2" pref="250" max="-2" attributes="0"/>
+                                                  <Component id="txtId" min="-2" pref="250" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                           <EmptySpace max="32767" attributes="0"/>
@@ -147,7 +147,7 @@
                                               <Group type="102" alignment="1" attributes="0">
                                                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="jComboBox1" min="-2" pref="249" max="-2" attributes="0"/>
+                                                  <Component id="cmbSpesialis" min="-2" pref="249" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                       </Group>
@@ -166,8 +166,8 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtNama" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtId" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="cmbSpesialis" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -175,7 +175,7 @@
                               <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="Cl" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtNama1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtNama" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="104" max="-2" attributes="0"/>
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
@@ -237,7 +237,7 @@
                     <Property name="text" type="java.lang.String" value="Nama             :"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtNama">
+                <Component class="javax.swing.JTextField" name="txtId">
                 </Component>
                 <Component class="javax.swing.JButton" name="jButton1">
                   <Properties>
@@ -246,27 +246,30 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Tambah"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="Cl">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Clear"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="jComboBox1">
+                <Component class="javax.swing.JComboBox" name="cmbSpesialis">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="11">
-                        <StringItem index="0" value="Dokter Spesialis Anak (Pediatri - Sp.A)"/>
-                        <StringItem index="1" value="Dokter Spesialis Penyakit Dalam  (Internis - Sp.PD)"/>
-                        <StringItem index="2" value="Dokter Spesialis Bedah (Sp.B)"/>
-                        <StringItem index="3" value="Dokter Spesialis Kebidanan dan Kandungan (Obstetri &amp; Ginekologi - Sp.OG)"/>
-                        <StringItem index="4" value="Dokter Spesialis Saraf (Neurologi - Sp.S)"/>
-                        <StringItem index="5" value="Dokter Spesialis Kulit dan Kelamin (Dermatovenereologi - Sp.KK/Sp.DV)"/>
-                        <StringItem index="6" value="Dokter Spesialis Mata (Ophthalmology - Sp.M)"/>
-                        <StringItem index="7" value="Dokter Spesialis Telinga Hidung Tenggorokan (THT - Sp.THT-KL)"/>
-                        <StringItem index="8" value="Dokter Spesialis Jiwa (Psikiatri - Sp.KJ)"/>
-                        <StringItem index="9" value="Dokter Spesialis Jantung dan Pembuluh Darah (Kardiologi - Sp.JP)"/>
-                        <StringItem index="10" value="Dokter Spesialis Paru (Pulmonologi - Sp.P)"/>
+                        <StringItem index="0" value="Spesialis Anak"/>
+                        <StringItem index="1" value="Spesialis Penyakit Dalam"/>
+                        <StringItem index="2" value="Spesialis Bedah"/>
+                        <StringItem index="3" value="Spesialis Kebidanan dan Kandungan"/>
+                        <StringItem index="4" value="Spesialis Saraf"/>
+                        <StringItem index="5" value="Spesialis Kulit dan Kelamin"/>
+                        <StringItem index="6" value="Spesialis Mata"/>
+                        <StringItem index="7" value="Spesialis Telinga Hidung Tenggorokan"/>
+                        <StringItem index="8" value="Spesialis Jiwa"/>
+                        <StringItem index="9" value="Spesialis Jantung dan Pembuluh Darah"/>
+                        <StringItem index="10" value="Spesialis Paru"/>
                       </StringArray>
                     </Property>
                   </Properties>
@@ -274,7 +277,7 @@
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtNama1">
+                <Component class="javax.swing.JTextField" name="txtNama">
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel6">
                   <Properties>
