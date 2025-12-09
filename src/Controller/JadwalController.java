@@ -38,7 +38,7 @@ public class JadwalController {
     }
 
     // ==================== Method 2: SELECT semua jadwal (isi JTable) ====================
-    public void tampilkanJadwal() {
+    public void tampilkanJadwalDokter() {
         try {
             // bersihkan isi tabel virtual
             this.dtm.getDataVector().removeAllElements();
@@ -51,35 +51,36 @@ public class JadwalController {
             // masukkan hasil query ke tabel virtual
             while (res.next()) {
                 Object[] obj = new Object[6];
-
                 obj[0] = res.getInt("id_jadwal");
                 obj[1] = res.getString("id_dokter");
                 obj[2] = res.getDate("tanggal");
                 obj[3] = res.getTime("jam_mulai");
                 obj[4] = res.getTime("jam_selesai");
                 obj[5] = res.getInt("kuota");
-
                 this.dtm.addRow(obj);
             }
-
         } catch (Exception e) {
             System.out.println("Query tampil jadwal gagal : " + e.getMessage());
         }
     }
 
     // ==================== Method 3: INSERT jadwal ====================
-    public boolean tambahJadwal(int k, LocalTime jm, LocalTime js, LocalDate t) {
-        // Hubungkan dengan model
+    public boolean tambahJadwalDokter(int k, LocalTime jm, LocalTime js, LocalDate t) {
+        // Hubungkan dengan model Jadwal
         Jadwal ja = new Jadwal();
+
         // Set nilai ke model
         ja.setKuota(k);
         ja.setJam_mulai(jm);
         ja.setJam_selesai(js);
         ja.setTanggal(t);
-        try {
-            this.sql = "INSERT INTO tb_jadwal (kuota , jam_mulai, jam_selesai, tanggal) VALUES (" + ja.getKuota() + ", '" + ja.getJam_mulai() + "', '" + ja.getJam_selesai() + "', '"+ ja.getTanggal() +"')";
 
-            // khusus INSERT/UPDATE/DELETE pakai executeUpdate
+        try {
+            this.sql = "INSERT INTO tb_jadwal (kuota , jam_mulai, jam_selesai, tanggal) VALUES ("
+                    + ja.getKuota() + ", '"
+                    + ja.getJam_mulai() + "', '"
+                    + ja.getJam_selesai() + "', '"
+                    + ja.getTanggal() + "')";
             this.stm.executeUpdate(sql);
             return true;
         } catch (Exception e) {
@@ -89,50 +90,41 @@ public class JadwalController {
     }
 
     // ==================== Method 4: UPDATE jadwal ====================
-    public boolean ubahJadwal(Jadwal j) {
-        // Hubungkan dengan model
+    public boolean ubahJadwalDokter(int k, LocalTime jm, LocalTime js, LocalDate t, int ij) {
         Jadwal ja = new Jadwal();
-        // Set nilai ke model
+
         ja.setKuota(k);
         ja.setJam_mulai(jm);
         ja.setJam_selesai(js);
         ja.setTanggal(t);
+        ja.setId_jadwal(ij);
 
         try {
-            String tgl        = Date.valueOf(j.getTanggal()).toString();
-            String jamMulai   = Time.valueOf(j.getJam_mulai()).toString();
-            String jamSelesai = Time.valueOf(j.getJam_selesai()).toString();
-
-            this.sql = "UPDATE tb_jadwal SET "
-                    + "tanggal = '" + tgl + "', "
-                    + "jam_mulai = '" + jamMulai + "', "
-                    + "jam_selesai = '" + jamSelesai + "', "
-                    + "kuota = " + j.getKuota() + ", "
-                    + "id_dokter = " + j.getId_dokter() + " "
-                    + "WHERE id_jadwal = " + j.getId_jadwal();
-
+            this.sql = "UPDATE tb_jadwal SET kuota = '" + ja.getKuota()
+                    + "', jam_mulai = '" + ja.getJam_mulai()
+                    + "', jam_selesai = '" + ja.getJam_selesai()
+                    + "', tanggal = '" + ja.getTanggal()
+                    + "' WHERE id = " + ja.getId_jadwal();
             this.stm.executeUpdate(sql);
-            status = true;
+            return true;
         } catch (Exception e) {
             System.out.println("Query ubah jadwal gagal : " + e.getMessage());
         }
-
-        return status;
+        return false;
     }
 
     // ==================== Method 5: DELETE jadwal ====================
-    public boolean hapusJadwal(int idJadwal) {
-        boolean status = false;
-
+    public boolean hapusJadwalDokter(int ij) {
+        Jadwal ja = new Jadwal();
+        ja.setId_jadwal(ij);
         try {
-            this.sql = "DELETE FROM tb_jadwal WHERE id_jadwal = " + idJadwal;
+            this.sql = "DELETE FROM tb_jadwal WHERE id_jadwal = " + ja.getId_jadwal();
             this.stm.executeUpdate(sql);
-            status = true;
+            return true;
         } catch (Exception e) {
             System.out.println("Query hapus jadwal gagal : " + e.getMessage());
         }
-
-        return status;
+        return false;
     }
 
     // ==================== Method 6: SELECT jadwal by dokter (opsional) ====================

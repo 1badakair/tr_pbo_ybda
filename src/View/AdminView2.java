@@ -4,6 +4,10 @@
  */
 package View;
 
+import Controller.JadwalController;
+import Controller.JadwalDokterController;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author LENOVO
@@ -17,6 +21,23 @@ public class AdminView2 extends javax.swing.JFrame {
      */
     public AdminView2() {
         initComponents();
+    }
+    
+    public AdminView2(String nama) {
+        initComponents();
+        this.jLabel1.setText("Selamat Datang "+ nama);
+        
+        // Agar ketika form dashboard di Load, tabelnya auto terisi
+        JadwalController jc = new JadwalController();
+        DefaultTableModel dtm = jc.createTable();
+        
+        // Menerapkan desain tabel (virtual) ke TabelSelect (tabel benaran)
+        this.TableTambah.setModel(dtm);
+        this.TableUpdate.setModel(dtm);
+        this.TableHapus.setModel(dtm);
+        
+        // Panggil method tampilkanAnggota
+        jc.tampilkanAnggota();
     }
 
     /**
