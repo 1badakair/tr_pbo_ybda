@@ -7,6 +7,7 @@ package View;
 import Controller.DokterController;
 import Controller.JadwalController;
 import Controller.JadwalDokterController;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -49,17 +50,17 @@ public class DokterView extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTabbedPane4 = new javax.swing.JTabbedPane();
+        spnUKuota = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TabelTambah = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        spnKuota = new javax.swing.JSpinner();
         jLabel6 = new javax.swing.JLabel();
-        jSpinner2 = new javax.swing.JSpinner();
-        jButton1 = new javax.swing.JButton();
+        spnJamSelesai = new javax.swing.JSpinner();
+        btnTambah = new javax.swing.JButton();
         spnJamMulai = new javax.swing.JSpinner();
         spTanggal = new javax.swing.JSpinner();
         jLabel7 = new javax.swing.JLabel();
@@ -67,17 +68,17 @@ public class DokterView extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jSpinner4 = new javax.swing.JSpinner();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jSpinner5 = new javax.swing.JSpinner();
-        jSpinner6 = new javax.swing.JSpinner();
+        spnUJamMulai = new javax.swing.JSpinner();
+        spnUJamSelesai = new javax.swing.JSpinner();
         jButton4 = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         TabelUpdate = new javax.swing.JTable();
         jLabel14 = new javax.swing.JLabel();
         spUTanggal = new javax.swing.JSpinner();
         jLabel10 = new javax.swing.JLabel();
+        txtKuota = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -97,7 +98,7 @@ public class DokterView extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("JADWAL DOKTER");
 
-        jTabbedPane4.setBackground(new java.awt.Color(255, 255, 153));
+        spnUKuota.setBackground(new java.awt.Color(255, 255, 153));
 
         jPanel2.setBackground(new java.awt.Color(144, 224, 239));
 
@@ -127,15 +128,18 @@ public class DokterView extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("Jam Selesai          : ");
 
-        jButton1.setBackground(new java.awt.Color(102, 255, 204));
-        jButton1.setText("Tambah");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        spnJamSelesai.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
+        spnJamSelesai.setEditor(new javax.swing.JSpinner.DateEditor(spnJamSelesai, "HH:mm"));
+
+        btnTambah.setBackground(new java.awt.Color(102, 255, 204));
+        btnTambah.setText("Tambah");
+        btnTambah.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnTambahActionPerformed(evt);
             }
         });
 
-        spnJamMulai.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.Minute));
+        spnJamMulai.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
         spnJamMulai.setEditor(new javax.swing.JSpinner.DateEditor(spnJamMulai, "HH:mm"));
 
         spTanggal.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.DAY_OF_MONTH));
@@ -163,7 +167,7 @@ public class DokterView extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(spnKuota, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(109, 109, 109)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel5)
@@ -175,9 +179,9 @@ public class DokterView extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(spTanggal, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
-                                    .addComponent(jSpinner2))
+                                    .addComponent(spnJamSelesai))
                                 .addGap(33, 33, 33)
-                                .addComponent(jButton1))))
+                                .addComponent(btnTambah))))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 775, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(63, 63, 63))
         );
@@ -197,21 +201,21 @@ public class DokterView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(spnJamSelesai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(spnKuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(spTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnTambah))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane4.addTab("Tambah", jPanel2);
+        spnUKuota.addTab("Tambah", jPanel2);
 
         jPanel3.setBackground(new java.awt.Color(144, 224, 239));
 
@@ -226,6 +230,12 @@ public class DokterView extends javax.swing.JFrame {
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel13.setText("Jam Selesai          : ");
+
+        spnUJamMulai.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
+        spnUJamMulai.setEditor(new javax.swing.JSpinner.DateEditor(spnUJamMulai, "HH:mm"));
+
+        spnUJamSelesai.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
+        spnUJamSelesai.setEditor(new javax.swing.JSpinner.DateEditor(spnUJamSelesai, "HH:mm"));
 
         jButton4.setBackground(new java.awt.Color(102, 255, 204));
         jButton4.setText("Update");
@@ -257,6 +267,8 @@ public class DokterView extends javax.swing.JFrame {
 
         jLabel10.setText("jLabel10");
 
+        txtKuota.setText("jTextField1");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -272,8 +284,8 @@ public class DokterView extends javax.swing.JFrame {
                                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addComponent(txtKuota, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
@@ -281,11 +293,11 @@ public class DokterView extends javax.swing.JFrame {
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addComponent(jLabel13)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jSpinner6, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(spnUJamSelesai, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addComponent(jLabel12)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jSpinner5, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(spnUJamMulai, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(107, 107, 107))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel14)
@@ -310,14 +322,14 @@ public class DokterView extends javax.swing.JFrame {
                                 .addComponent(jLabel10))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel12)
-                                .addComponent(jSpinner5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(spnUJamMulai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel13)
-                            .addComponent(jSpinner6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(spnUJamSelesai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel11)
-                        .addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtKuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -330,7 +342,7 @@ public class DokterView extends javax.swing.JFrame {
                 .addGap(26, 26, 26))
         );
 
-        jTabbedPane4.addTab("Update", jPanel3);
+        spnUKuota.addTab("Update", jPanel3);
 
         jPanel5.setBackground(new java.awt.Color(204, 255, 255));
 
@@ -364,7 +376,7 @@ public class DokterView extends javax.swing.JFrame {
                 .addContainerGap(176, Short.MAX_VALUE))
         );
 
-        jTabbedPane4.addTab("Hapus", jPanel5);
+        spnUKuota.addTab("Hapus", jPanel5);
 
         jPanel4.setBackground(new java.awt.Color(144, 224, 239));
 
@@ -424,7 +436,7 @@ public class DokterView extends javax.swing.JFrame {
                     .addContainerGap(49, Short.MAX_VALUE)))
         );
 
-        jTabbedPane4.addTab("Verifikasi", jPanel4);
+        spnUKuota.addTab("Verifikasi", jPanel4);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -433,7 +445,7 @@ public class DokterView extends javax.swing.JFrame {
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(52, 52, 52)
-                .addComponent(jTabbedPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 805, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(spnUKuota, javax.swing.GroupLayout.PREFERRED_SIZE, 805, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -442,7 +454,7 @@ public class DokterView extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(spnUKuota, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
@@ -460,9 +472,58 @@ public class DokterView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        // 1. Menghubungkan dengan Controller
+    // (controller sudah dibuat di constructor DokterView)
+    JadwalDokterController jdc = new JadwalDokterController();
+
+    // 2. Persiapan nilai input
+    try {
+        int kuota = Integer.parseInt(this.txtKuota.getText());
+
+        // ambil tanggal dari spinnerTanggal
+        Date utilTanggal = (Date) this.jSpinnerTanggal.getValue();
+        LocalDate t = utilTanggal.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        // ambil jam mulai
+        Date utilJamMulai = (Date) this.jSpinnerJamMulai.getValue();
+        LocalTime jm = utilJamMulai.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalTime()
+                .withSecond(0).withNano(0);
+
+        // ambil jam selesai
+        Date utilJamSelesai = (Date) this.jSpinnerJamSelesai.getValue();
+        LocalTime js = utilJamSelesai.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalTime()
+                .withSecond(0).withNano(0);
+
+        // 3. Memanggil method tambahJadwalDokter
+        boolean status = jd.tambahJadwalDokter(kuota, jm, js, t);
+
+        // 4. Jika berhasil
+        if(status == true){
+
+            // Autorefresh tabel
+            DefaultTableModel dtm = jd.createTable();
+            this.TabelTambah.setModel(dtm);
+            this.TabelUpdate.setModel(dtm);
+            jd.tampilkanJadwalDokter();
+
+            JOptionPane.showMessageDialog(this, "Berhasil menambah jadwal");
+        } 
+        else {
+            JOptionPane.showMessageDialog(this, "Gagal menambah jadwal");
+        }
+
+    } catch(Exception e){
+        JOptionPane.showMessageDialog(this, "Input tidak valid: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnTambahActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
@@ -521,7 +582,7 @@ public class DokterView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TabelTambah;
     private javax.swing.JTable TabelUpdate;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnTambah;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox3;
@@ -548,16 +609,16 @@ public class DokterView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
-    private javax.swing.JSpinner jSpinner4;
-    private javax.swing.JSpinner jSpinner5;
-    private javax.swing.JSpinner jSpinner6;
-    private javax.swing.JTabbedPane jTabbedPane4;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable3;
     private javax.swing.JSpinner spTanggal;
     private javax.swing.JSpinner spUTanggal;
     private javax.swing.JSpinner spnJamMulai;
+    private javax.swing.JSpinner spnJamSelesai;
+    private javax.swing.JSpinner spnKuota;
+    private javax.swing.JSpinner spnUJamMulai;
+    private javax.swing.JSpinner spnUJamSelesai;
+    private javax.swing.JTabbedPane spnUKuota;
+    private javax.swing.JTextField txtKuota;
     // End of variables declaration//GEN-END:variables
 }

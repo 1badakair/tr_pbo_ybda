@@ -27,6 +27,12 @@ public class JadwalDokterController {
         db.config();
         this.stm = db.stm;
     }
+    
+    public JadwalDokterController() {
+        Koneksi db = new Koneksi();
+        db.config();
+        this.stm = db.stm;
+    }
 
     // ==================== Method 1: desain tabel ====================
     public DefaultTableModel createTable() {
