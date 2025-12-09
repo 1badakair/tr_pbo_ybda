@@ -7,6 +7,7 @@ package View;
 import Controller.DokterController;
 import Controller.JadwalController;
 import Controller.JadwalDokterController;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -14,7 +15,7 @@ import javax.swing.table.DefaultTableModel;
  * @author LENOVO
  */
 public class AdminView2 extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminView2.class.getName());
 
     /**
@@ -23,8 +24,6 @@ public class AdminView2 extends javax.swing.JFrame {
     public AdminView2() {
         initComponents();
     }
-    
-
 
     public AdminView2(String nama_admin) {
         initComponents();
@@ -42,8 +41,6 @@ public class AdminView2 extends javax.swing.JFrame {
         // Panggil method tampilkanAnggota
         dc.tampilkanDokter();
     }
-
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -425,6 +422,11 @@ public class AdminView2 extends javax.swing.JFrame {
 
         jButton7.setBackground(new java.awt.Color(153, 255, 153));
         jButton7.setText("Dokter");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -476,6 +478,24 @@ public class AdminView2 extends javax.swing.JFrame {
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField5ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        int getAnswer = JOptionPane.showConfirmDialog(rootPane, "Apakah anda ingin pindah keJadwal?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        switch (getAnswer) {
+            case 0:
+                try {
+                    AdminView lv = new AdminView();
+                    this.dispose();
+                    lv.setVisible(true);
+                } catch (Exception e) {
+                    System.out.println("Error : " + e.getMessage());
+                }
+                break;
+            case 1:
+                break;
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
      * @param args the command line arguments

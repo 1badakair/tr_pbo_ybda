@@ -78,11 +78,14 @@ public class LoginView extends javax.swing.JFrame {
             }
         });
 
+        txtUsername.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         txtUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUsernameActionPerformed(evt);
             }
         });
+
+        txtPassword.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

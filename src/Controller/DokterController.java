@@ -73,7 +73,6 @@ public class DokterController {
         try {
             this.sql = "INSERT INTO tb_dokter(id_dokter,nama_dokter,spesialisasi) "
                     + "VALUES ('" + dk.getId_dokter() + "','" + dk.getNama_dokter() + "','" + dk.getSpesialisasi() + "')";
-            System.out.println("tambahDokter: executing -> " + this.sql);
             this.stm.executeUpdate(this.sql);
             System.out.println("tambahDokter: OK");
             return true;
@@ -86,10 +85,9 @@ public class DokterController {
     }
 
     // Method 4: UPDATE
-    public boolean ubahDokter(String a, String b, String c) {
+    public boolean ubahDokter( String b, String c) {
 
         Dokter dk = new Dokter();
-        dk.setId_dokter(a);
         dk.setNama_dokter(b);
         dk.setSpesialisasi(c);
 
