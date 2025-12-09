@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import javax.swing.table.DefaultTableModel;
 
-public class JadwalController {
+public class JadwalDokterController {
 
     public Statement stm;
     public ResultSet res;
@@ -19,7 +19,7 @@ public class JadwalController {
     DefaultTableModel dtm = new DefaultTableModel();
 
     // konstruktor
-    public JadwalController() {
+    public JadwalDokterController() {
         // objek koneksi
         Koneksi db = new Koneksi();
         db.config();
@@ -38,7 +38,7 @@ public class JadwalController {
     }
 
     // ==================== Method 2: SELECT semua jadwal (isi JTable) ====================
-    public void tampilkanJadwal() {
+    public void tampilkanJadwalDokter() {
         try {
             // bersihkan isi tabel virtual
             this.dtm.getDataVector().removeAllElements();
@@ -68,7 +68,7 @@ public class JadwalController {
     }
 
     // ==================== Method 3: INSERT jadwal ====================
-    public boolean tambahJadwal(int k, LocalTime jm, LocalTime js, LocalDate t) {
+    public boolean tambahJadwalDokter(int k, LocalTime jm, LocalTime js, LocalDate t) {
         // Hubungkan dengan model
         Jadwal ja = new Jadwal();
         // Set nilai ke model
@@ -89,7 +89,7 @@ public class JadwalController {
     }
 
     // ==================== Method 4: UPDATE jadwal ====================
-    public boolean ubahJadwal(Jadwal j) {
+    public boolean ubahJadwalDokter(int k, LocalTime jm, LocalTime js, LocalDate t) {
         // Hubungkan dengan model
         Jadwal ja = new Jadwal();
         // Set nilai ke model
@@ -99,10 +99,6 @@ public class JadwalController {
         ja.setTanggal(t);
 
         try {
-            String tgl        = Date.valueOf(j.getTanggal()).toString();
-            String jamMulai   = Time.valueOf(j.getJam_mulai()).toString();
-            String jamSelesai = Time.valueOf(j.getJam_selesai()).toString();
-
             this.sql = "UPDATE tb_jadwal SET "
                     + "tanggal = '" + tgl + "', "
                     + "jam_mulai = '" + jamMulai + "', "
@@ -121,7 +117,7 @@ public class JadwalController {
     }
 
     // ==================== Method 5: DELETE jadwal ====================
-    public boolean hapusJadwal(int idJadwal) {
+    public boolean hapusJadwalDokter(int idJadwal) {
         boolean status = false;
 
         try {
@@ -146,3 +142,4 @@ public class JadwalController {
         return this.res;
     }
 }
+

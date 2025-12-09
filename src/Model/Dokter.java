@@ -2,15 +2,15 @@ package Model;
 
 public class Dokter {
 
-    private int id_dokter;
+    private String id_dokter;
     private String nama_dokter;
     private String spesialisasi;
 
-    public int getId_dokter() {
+    public String getId_dokter() {
         return id_dokter;
     }
 
-    public void setId_dokter(int id_dokter) {
+    public void setId_dokter(String id_dokter) {
         this.id_dokter = id_dokter;
     }
 

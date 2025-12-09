@@ -15,8 +15,8 @@ public class AuthController {
     // konstruktor
     public AuthController() {
         Koneksi db = new Koneksi();
-        db.config();           // harus men-setup Koneksi.con dan Koneksi.stm
-        this.stm = db.stm;     // tetap diisi (jika db.config mengisi stm)
+        db.config();
+        this.stm = db.stm;
     }
 
     public String cekLogin(String username, String plainPassword) {
