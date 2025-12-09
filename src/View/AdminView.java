@@ -5,6 +5,7 @@
 package View;
 
 import Controller.JadwalController;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -99,7 +100,7 @@ public class AdminView extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Bahnschrift", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("TAMBAH DOKTER");
+        jLabel1.setText("DASHBOARD ADMIN");
 
         Jpannel.setBackground(new java.awt.Color(255, 255, 153));
 
@@ -396,6 +397,11 @@ public class AdminView extends javax.swing.JFrame {
 
         jButton6.setBackground(new java.awt.Color(255, 153, 153));
         jButton6.setText("Log Out");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setBackground(new java.awt.Color(153, 204, 255));
         jButton7.setText("Jadwal");
@@ -406,12 +412,12 @@ public class AdminView extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(108, 108, 108)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(75, 75, 75)
                 .addComponent(jButton7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton6)
-                .addGap(31, 31, 31))
+                .addGap(37, 37, 37))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(47, 47, 47)
                 .addComponent(Jpannel, javax.swing.GroupLayout.PREFERRED_SIZE, 804, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -423,8 +429,9 @@ public class AdminView extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton7)
+                        .addComponent(jButton6)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Jpannel, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(33, Short.MAX_VALUE))
@@ -451,6 +458,24 @@ public class AdminView extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+         // TODO add your handling code here:
+        int getAnswer = JOptionPane.showConfirmDialog(rootPane, "Apakah yakin ingin keluar?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        switch(getAnswer){
+            case 0:
+                try{
+                     LoginView lv = new LoginView();
+                     this.dispose();
+                     lv.setVisible(true);
+                }catch(Exception e){
+                    System.out.println("Error : " + e.getMessage());
+                }
+                break;
+            case 1:
+                break;
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
