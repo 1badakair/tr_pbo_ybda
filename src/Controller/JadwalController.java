@@ -27,6 +27,7 @@ public class JadwalController {
 
     // ==================== Method 1: Buat model/desain tabel ====================
     public DefaultTableModel createTable() {
+        this.dtm = new DefaultTableModel();
         this.dtm.addColumn("ID Jadwal");
         this.dtm.addColumn("ID Dokter");
         this.dtm.addColumn("Tanggal");
@@ -64,18 +65,20 @@ public class JadwalController {
     }
 
     // ==================== Method 3: INSERT jadwal ====================
-    public boolean tambahJadwalDokter(int k, Time jm, Time js, Date t) {
+    public boolean tambahJadwalDokter(String id, int k, Time jm, Time js, Date t) {
         // Hubungkan dengan model Jadwal
         Jadwal ja = new Jadwal();
 
         // Set nilai ke model
+        ja.setId_dokter(id);
         ja.setKuota(k);
         ja.setJam_mulai(jm);
         ja.setJam_selesai(js);
         ja.setTanggal(t);
 
         try {
-            this.sql = "INSERT INTO tb_jadwal (kuota , jam_mulai, jam_selesai, tanggal) VALUES ("
+            this.sql = "INSERT INTO tb_jadwal (id_dokter, kuota , jam_mulai, jam_selesai, tanggal) VALUES ('"
+                    + ja.getId_dokter() + "', "
                     + ja.getKuota() + ", '"
                     + ja.getJam_mulai() + "', '"
                     + ja.getJam_selesai() + "', '"
@@ -89,7 +92,7 @@ public class JadwalController {
     }
 
     // ==================== Method 4: UPDATE jadwal ====================
-    public boolean ubahJadwalDokter(int k, Time jm, Time js, Date t, int ij) {
+    public boolean ubahJadwalDokter(int k, Time jm, Time js, Date t, int ij,String id) {
         Jadwal ja = new Jadwal();
 
         ja.setKuota(k);
@@ -97,13 +100,15 @@ public class JadwalController {
         ja.setJam_selesai(js);
         ja.setTanggal(t);
         ja.setId_jadwal(ij);
+        ja.setId_dokter(id);
 
         try {
             this.sql = "UPDATE tb_jadwal SET kuota = '" + ja.getKuota()
                     + "', jam_mulai = '" + ja.getJam_mulai()
                     + "', jam_selesai = '" + ja.getJam_selesai()
                     + "', tanggal = '" + ja.getTanggal()
-                    + "' WHERE id = " + ja.getId_jadwal();
+                    + "', id_dokter = '" + ja.getId_dokter()
+                    + "' WHERE id_jadwal = " + ja.getId_jadwal();
             this.stm.executeUpdate(sql);
             return true;
         } catch (Exception e) {

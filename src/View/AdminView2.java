@@ -4,9 +4,9 @@
  */
 package View;
 
-import Controller.DokterController;
 import Controller.JadwalController;
-import Controller.JadwalDokterController;
+import java.time.ZoneId;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,25 +21,24 @@ public class AdminView2 extends javax.swing.JFrame {
     /**
      * Creates new form AdminView2
      */
+    private JadwalController jc;
+    private int idJadwal = 0;
+    private String idDokter = "";
+
     public AdminView2() {
         initComponents();
     }
 
     public AdminView2(String nama_admin) {
         initComponents();
-        this.jLabel1.setText("Selamat Datang " + nama_admin);
-
-        // Agar ketika form dashboard di Load, tabelnya auto terisi
-        DokterController dc = new DokterController();
-        DefaultTableModel dtm = dc.createTable();
-
-        // Menerapkan desain tabel (virtual) ke TabelSelect (tabel benaran)
+        this.jLabel1.setText("Selamat Datang " + nama_admin); // Agar ketika form dashboard di Load, tabelnya auto terisi 
+        this.jc = new JadwalController();
+        DefaultTableModel dtm = jc.createTable();
+        // Menerapkan desain tabel (virtual) ke TabelSelect (tabel benaran) 
         this.TableTambah.setModel(dtm);
         this.TableUpdate.setModel(dtm);
-        this.TableHapus.setModel(dtm);
-
-        // Panggil method tampilkanAnggota
-        dc.tampilkanDokter();
+        this.TableHapus.setModel(dtm); // Panggil method tampilkanAnggota 
+        jc.tampilkanJadwalDokter();
     }
 
     /**
@@ -61,27 +60,29 @@ public class AdminView2 extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        txtNama = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        txtIdDokter = new javax.swing.JTextField();
+        btnTambah = new javax.swing.JButton();
         Cl = new javax.swing.JButton();
-        jSpinner1 = new javax.swing.JSpinner();
+        spTanggal = new javax.swing.JSpinner();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jSpinner2 = new javax.swing.JSpinner();
-        jSpinner3 = new javax.swing.JSpinner();
+        JMulai = new javax.swing.JSpinner();
+        JSelesai = new javax.swing.JSpinner();
+        spKuota = new javax.swing.JSpinner();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         TableUpdate = new javax.swing.JTable();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
         jLabel20 = new javax.swing.JLabel();
-        jSpinner4 = new javax.swing.JSpinner();
-        jSpinner5 = new javax.swing.JSpinner();
-        jSpinner6 = new javax.swing.JSpinner();
-        jSpinner7 = new javax.swing.JSpinner();
+        spUTanggal = new javax.swing.JSpinner();
+        spUKuota = new javax.swing.JSpinner();
+        JUMulai = new javax.swing.JSpinner();
+        JUSelesai = new javax.swing.JSpinner();
+        txtUIdDokter = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         TableHapus = new javax.swing.JTable();
@@ -104,7 +105,9 @@ public class AdminView2 extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Bahnschrift", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel1.setText("TAMBAH JADWAL");
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         Jpannel.setBackground(new java.awt.Color(255, 255, 153));
 
@@ -134,18 +137,36 @@ public class AdminView2 extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Tanggal     :");
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 153));
-        jButton1.setText("Tambah");
+        txtIdDokter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdDokterActionPerformed(evt);
+            }
+        });
+
+        btnTambah.setBackground(new java.awt.Color(255, 255, 153));
+        btnTambah.setText("Tambah");
+        btnTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahActionPerformed(evt);
+            }
+        });
 
         Cl.setText("Clear");
 
-        jSpinner1.setModel(new javax.swing.SpinnerDateModel());
+        spTanggal.setModel(new javax.swing.SpinnerDateModel());
+        spTanggal.setEditor(new javax.swing.JSpinner.DateEditor(spTanggal, "dd/MM/yyyy"));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("Jam Mulai    :");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Jam Selesai  :");
+
+        JMulai.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
+        JMulai.setEditor(new javax.swing.JSpinner.DateEditor(JMulai, "HH:mm"));
+
+        JSelesai.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
+        JSelesai.setEditor(new javax.swing.JSpinner.DateEditor(JSelesai, "HH:mm"));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -166,23 +187,26 @@ public class AdminView2 extends javax.swing.JFrame {
                                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtNama)
-                                    .addComponent(jSpinner1, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE))
+                                    .addComponent(txtIdDokter)
+                                    .addComponent(spTanggal, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jSpinner3))
+                                        .addComponent(JSelesai))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jSpinner2)))
+                                        .addComponent(JMulai)))
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(Cl)))))
-                .addContainerGap(16, Short.MAX_VALUE))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(btnTambah)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(Cl))
+                                    .addComponent(spKuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,17 +216,18 @@ public class AdminView2 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtIdDokter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
-                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(JMulai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spKuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(Cl)
-                    .addComponent(jButton1)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTambah)
+                    .addComponent(spTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
-                    .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(JSelesai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(104, 104, 104)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
@@ -227,6 +252,11 @@ public class AdminView2 extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        TableUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TableMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(TableUpdate);
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -235,24 +265,31 @@ public class AdminView2 extends javax.swing.JFrame {
         jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel15.setText("Tanggal            :");
 
-        jButton2.setBackground(new java.awt.Color(255, 204, 204));
-        jButton2.setText("Update");
+        btnUpdate.setBackground(new java.awt.Color(255, 204, 204));
+        btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel19.setText("Jam Mulai      :");
 
-        jButton4.setBackground(new java.awt.Color(255, 255, 153));
-        jButton4.setText("Cari");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
         jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel20.setText("Jam Selesai    :");
 
-        jSpinner4.setModel(new javax.swing.SpinnerDateModel());
+        spUTanggal.setModel(new javax.swing.SpinnerDateModel());
+        spUTanggal.setEditor(new javax.swing.JSpinner.DateEditor(spUTanggal, "dd/MM/yyyy"));
+
+        JUMulai.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
+        JUMulai.setEditor(new javax.swing.JSpinner.DateEditor(JUMulai, "HH:mm"));
+
+        JUSelesai.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.MINUTE));
+        JUSelesai.setEditor(new javax.swing.JSpinner.DateEditor(JUSelesai, "HH:mm"));
+
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel16.setText("ID                     :");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -260,54 +297,62 @@ public class AdminView2 extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jSpinner5, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(spUKuota))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSpinner7, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jSpinner6, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtUIdDokter)
+                                    .addComponent(spUTanggal, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(JUSelesai, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(JUMulai, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnUpdate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtUIdDokter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel19)
+                    .addComponent(JUMulai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel16))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
-                    .addComponent(jButton4)
-                    .addComponent(jLabel19)
-                    .addComponent(jSpinner4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinner6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
-                    .addComponent(jButton2)
+                    .addComponent(spUTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel20)
-                    .addComponent(jSpinner5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinner7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(17, Short.MAX_VALUE))
+                    .addComponent(JUSelesai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel14)
+                            .addComponent(spUKuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btnUpdate)))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         Jpannel.addTab("Update", jPanel3);
@@ -433,11 +478,11 @@ public class AdminView2 extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(49, Short.MAX_VALUE)
+                .addContainerGap(18, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(81, 81, 81)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 679, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton6))
@@ -471,31 +516,171 @@ public class AdminView2 extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField5ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        int getAnswer = JOptionPane.showConfirmDialog(rootPane, "Apakah anda ingin pindah ke Jadwal?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-        switch (getAnswer) {
-            case 0:
-                try {
-                    AdminView lv = new AdminView();
-                    this.dispose();
-                    lv.setVisible(true);
-                } catch (Exception e) {
-                    System.out.println("Error : " + e.getMessage());
-                }
-                break;
-            case 1:
-                break;
-        }
+        String teksLabel = this.jLabel1.getText();
+
+        // 2. Bersihkan teks agar hanya tersisa namanya saja
+        // (Misal: "Selamat Datang Budi" menjadi "Budi")
+        String namaAdmin = teksLabel.replace("Selamat Datang ", "");
+
+        // 3. Buat AdminView2 dengan MENGIRIM parameter nama
+        AdminView viewJadwal = new AdminView(namaAdmin);
+
+        // 4. Tampilkan form baru & tutup form lama
+        viewJadwal.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        // 1. Menghubungkan dengan Controller
+
+        // (controller sudah dibuat di constructor DokterView)
+        if (this.jc == null) {
+            JOptionPane.showMessageDialog(this, "Controller belum diinisialisasi. Silakan login ulang.");
+            return;
+        }
+
+        // 2. Persiapan nilai input
+        try {
+            String id = this.txtIdDokter.getText();
+
+            int kuota = (int) spKuota.getValue();
+
+            // ambil tanggal dari spinnerTanggal
+            // (Date) mengubah value dari objek menjadi Date
+            java.sql.Date sqlTanggal = java.sql.Date.valueOf(((Date) spTanggal.getValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+
+            // ambil jam mulai
+            java.sql.Time sqlJamMulai = java.sql.Time.valueOf(((Date) JMulai.getValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalTime().withSecond(0).withNano(0));
+
+            // ambil jam selesai
+            java.sql.Time sqlJamSelesai = java.sql.Time.valueOf(((Date) JSelesai.getValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalTime().withSecond(0).withNano(0));
+
+            // 3. Memanggil method tambahJadwalDokter
+            boolean status = jc.tambahJadwalDokter(id, kuota, sqlJamMulai, sqlJamSelesai, sqlTanggal);
+
+            // 4. Jika berhasil
+            if (status == true) {
+
+                // Autorefresh tabel
+                DefaultTableModel dtm = jc.createTable();
+                this.TableTambah.setModel(dtm);
+                this.TableUpdate.setModel(dtm);
+                this.TableHapus.setModel(dtm);
+                jc.tampilkanJadwalDokter();
+
+                JOptionPane.showMessageDialog(this, "Berhasil menambah jadwal");
+            } else {
+                JOptionPane.showMessageDialog(this, "Gagal menambah jadwal");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Input tidak valid: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void txtIdDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdDokterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIdDokterActionPerformed
+
+    private void TableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableMouseClicked
+        // TODO add your handling code here
+        // 1. Siapkan data DTM baru
+        DefaultTableModel dtm2 = (DefaultTableModel) this.TableUpdate.getModel();
+        int pilih = this.TableUpdate.getSelectedRow();
+
+//        // Ambil ID jadwal
+        this.idJadwal = Integer.parseInt(dtm2.getValueAt(pilih, 0).toString());
+
+        this.txtUIdDokter.setText(dtm2.getValueAt(pilih, 1).toString());
+
+        // Ambil tanggal (sql.Date → util.Date)
+        java.sql.Date sqlTanggal = (java.sql.Date) dtm2.getValueAt(pilih, 2);
+        this.spUTanggal.setValue(new java.util.Date(sqlTanggal.getTime()));
+
+        // Ambil jam mulai
+        java.sql.Time sqlJamMulai = (java.sql.Time) dtm2.getValueAt(pilih, 3);
+        this.JUMulai.setValue(new java.util.Date(sqlJamMulai.getTime()));
+
+        // Ambil jam selesai
+        java.sql.Time sqlJamSelesai = (java.sql.Time) dtm2.getValueAt(pilih, 4);
+        this.JUSelesai.setValue(new java.util.Date(sqlJamSelesai.getTime()));
+
+        // Ambil kuota → ke spinner
+        int kuota = Integer.parseInt(dtm2.getValueAt(pilih, 5).toString());
+        this.spUKuota.setValue(kuota);
+        this.idDokter = txtUIdDokter.getText();
+
+//        programmaticUpdate = true;
+//        try {
+//            spTanggal.setValue(new java.util.Date(sqlTanggal.getTime()));
+//            spJamMulai.setValue(new java.util.Date(sqlJamMulai.getTime()));
+//            spJamSelesai.setValue(new java.util.Date(sqlJamSelesai.getTime()));
+//            spUKuota.setValue(kuota);
+//        } finally {
+//            programmaticUpdate = false;
+//        }
+    }//GEN-LAST:event_TableMouseClicked
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+        // 1. Menghubungkan dengan Controller
+
+        // (controller sudah dibuat di constructor DokterView)
+        System.out.println("DEBUG IDs: idJadwal=" + idJadwal + ", idDokter=" +idDokter);
+        System.out.println("DEBUG spinner raw: spJamMulai.class=" + JMulai.getValue().getClass().getName() + ", value=" + JMulai.getValue());
+        if (this.jc == null) {
+            JOptionPane.showMessageDialog(this, "Controller belum diinisialisasi. Silakan login ulang.");
+            return;
+        }
+
+        // 2. Persiapan nilai input
+        try {
+            int kuota = (int) spUKuota.getValue();
+            this.idDokter = txtUIdDokter.getText();
+
+            // Ambil nilai dari spinner sebagai java.util.Date (jelas)
+            java.util.Date utilTanggal = (java.util.Date) spUTanggal.getValue();
+            java.util.Date utilJamMulai = (java.util.Date) JUMulai.getValue();
+            java.util.Date utilJamSelesai = (java.util.Date) JUSelesai.getValue();
+
+            // Pastikan idJadwal sudah ada (tidak 0)
+            if (idJadwal <= 0) {
+                JOptionPane.showMessageDialog(this, "Pilih jadwal yang akan diubah terlebih dahulu.");
+                return;
+            }
+            
+            // Konversi ke java.sql.* dengan cara paling sederhana
+            java.sql.Date sqlTanggal = new java.sql.Date(utilTanggal.getTime());
+            // Untuk jam, kita ingin hanya waktu (hh:mm:ss) — java.sql.Time cukup dari getTime()
+            java.sql.Time sqlJamMulai = new java.sql.Time(utilJamMulai.getTime());
+            java.sql.Time sqlJamSelesai = new java.sql.Time(utilJamSelesai.getTime());
+
+            // Panggil controller update
+            boolean status = jc.ubahJadwalDokter(kuota, sqlJamMulai, sqlJamSelesai, sqlTanggal, idJadwal, idDokter);
+
+            if (status) {
+                DefaultTableModel dtm = jc.createTable();
+                this.TableTambah.setModel(dtm);
+                this.TableUpdate.setModel(dtm);
+                this.TableHapus.setModel(dtm);
+                jc.tampilkanJadwalDokter();
+                JOptionPane.showMessageDialog(this, "Berhasil mengubah jadwal");
+            } else {
+                JOptionPane.showMessageDialog(this, "Gagal mengubah jadwal");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Input tidak valid: " + e.getMessage());
+            e.printStackTrace();
+        }
+        System.out.println("DEBUG IDs: idJadwal=" + idJadwal);
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -524,14 +709,17 @@ public class AdminView2 extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cl;
+    private javax.swing.JSpinner JMulai;
+    private javax.swing.JSpinner JSelesai;
+    private javax.swing.JSpinner JUMulai;
+    private javax.swing.JSpinner JUSelesai;
     private javax.swing.JTabbedPane Jpannel;
     private javax.swing.JTable TableHapus;
     private javax.swing.JTable TableTambah;
     private javax.swing.JTable TableUpdate;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnTambah;
+    private javax.swing.JButton btnUpdate;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
@@ -542,6 +730,7 @@ public class AdminView2 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
@@ -560,14 +749,12 @@ public class AdminView2 extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
-    private javax.swing.JSpinner jSpinner3;
-    private javax.swing.JSpinner jSpinner4;
-    private javax.swing.JSpinner jSpinner5;
-    private javax.swing.JSpinner jSpinner6;
-    private javax.swing.JSpinner jSpinner7;
     private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField txtNama;
+    private javax.swing.JSpinner spKuota;
+    private javax.swing.JSpinner spTanggal;
+    private javax.swing.JSpinner spUKuota;
+    private javax.swing.JSpinner spUTanggal;
+    private javax.swing.JTextField txtIdDokter;
+    private javax.swing.JTextField txtUIdDokter;
     // End of variables declaration//GEN-END:variables
 }

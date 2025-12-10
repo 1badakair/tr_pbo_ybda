@@ -96,6 +96,7 @@ public class AdminView extends javax.swing.JFrame {
 
         jLabel23.setFont(new java.awt.Font("Bahnschrift", 1, 36)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel23.setText("DASHBOARD ADMIN");
 
         Jpannel.setBackground(new java.awt.Color(255, 255, 153));
@@ -431,13 +432,9 @@ public class AdminView extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(75, 75, 75))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton6)
@@ -635,20 +632,20 @@ public class AdminView extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        int getAnswer = JOptionPane.showConfirmDialog(rootPane, "Apakah anda ingin pindah ke Dokter?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-        switch (getAnswer) {
-            case 0:
-                try {
-                    AdminView2 lv = new AdminView2();
-                    this.dispose();
-                    lv.setVisible(true);
-                } catch (Exception e) {
-                    System.out.println("Error : " + e.getMessage());
-                }
-                break;
-            case 1:
-                break;
-        }
+        // 1. Ambil teks dari label "Selamat Datang [Nama]"
+    String teksLabel = this.jLabel1.getText();
+    
+    // 2. Bersihkan teks agar hanya tersisa namanya saja
+    // (Misal: "Selamat Datang Budi" menjadi "Budi")
+    String namaAdmin = teksLabel.replace("Selamat Datang ", ""); 
+
+    // 3. Buat AdminView2 dengan MENGIRIM parameter nama
+    AdminView2 viewJadwal = new AdminView2(namaAdmin);
+    
+    // 4. Tampilkan form baru & tutup form lama
+    this.dispose();
+    viewJadwal.setVisible(true);
+
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
