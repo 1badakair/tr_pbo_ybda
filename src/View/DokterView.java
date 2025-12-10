@@ -22,9 +22,9 @@ public class DokterView extends javax.swing.JFrame {
     private JadwalDokterController jdc;
     private int idJadwal = 0;
 
-    private javax.swing.event.ChangeListener jamMulaiListener;
-    private javax.swing.event.ChangeListener jamSelesaiListener;
-    private boolean programmaticUpdate = false;
+//    private javax.swing.event.ChangeListener jamMulaiListener;
+//    private javax.swing.event.ChangeListener jamSelesaiListener;
+//    private boolean programmaticUpdate = false;
 
     public DokterView() {
         initComponents();
@@ -33,22 +33,22 @@ public class DokterView extends javax.swing.JFrame {
     public DokterView(String idDokter, String nama_dokter) {
         initComponents();
 
-        jamMulaiListener = e -> {
-            if (programmaticUpdate) {
-                return; // kalau setValue dari kode → abaikan
-            }    // kode listener (kalau ada)
-        };
-
-        spJamMulai.addChangeListener(jamMulaiListener);
-
-        jamSelesaiListener = e -> {
-            if (programmaticUpdate) {
-                return;
-            }
-            // kode listener (kalau ada)
-        };
-
-        spJamSelesai.addChangeListener(jamSelesaiListener);
+//        jamMulaiListener = e -> {
+//            if (programmaticUpdate) {
+//                return; // kalau setValue dari kode → abaikan
+//            }    // kode listener (kalau ada)
+//        };
+//
+//        spJamMulai.addChangeListener(jamMulaiListener);
+//
+//        jamSelesaiListener = e -> {
+//            if (programmaticUpdate) {
+//                return;
+//            }
+//            // kode listener (kalau ada)
+//        };
+//
+//        spJamSelesai.addChangeListener(jamSelesaiListener);
 
         this.jLabel1.setText("Selamat Datang " + nama_dokter);
         this.jLabel3.setText(nama_dokter);
@@ -626,37 +626,43 @@ public class DokterView extends javax.swing.JFrame {
         try {
             int kuota = (int) spUKuota.getValue();
 
-            // ambil tanggal dari spinnerTanggal
-            // (Date) mengubah value dari objek menjadi Date
-            java.sql.Date sqlTanggal = java.sql.Date.valueOf(((Date) spTanggal.getValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            // Ambil nilai dari spinner sebagai java.util.Date (jelas)
+            java.util.Date utilTanggal = (java.util.Date) spUTanggal.getValue();
+            java.util.Date utilJamMulai = (java.util.Date) spUJamMulai.getValue();
+            java.util.Date utilJamSelesai = (java.util.Date) spUJamSelesai.getValue();
 
-            // ambil jam mulai
-            java.sql.Time sqlJamMulai = java.sql.Time.valueOf(((Date) spJamMulai.getValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalTime().withSecond(0).withNano(0));
+            // Pastikan idJadwal sudah ada (tidak 0)
+            if (idJadwal <= 0) {
+                JOptionPane.showMessageDialog(this, "Pilih jadwal yang akan diubah terlebih dahulu.");
+                return;
+            }
 
-            // ambil jam selesai
-            java.sql.Time sqlJamSelesai = java.sql.Time.valueOf(((Date) spJamSelesai.getValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalTime().withSecond(0).withNano(0));
+            // Konversi ke java.sql.* dengan cara paling sederhana
+            java.sql.Date sqlTanggal = new java.sql.Date(utilTanggal.getTime());
+            // Untuk jam, kita ingin hanya waktu (hh:mm:ss) — java.sql.Time cukup dari getTime()
+            java.sql.Time sqlJamMulai = new java.sql.Time(utilJamMulai.getTime());
+            java.sql.Time sqlJamSelesai = new java.sql.Time(utilJamSelesai.getTime());
 
-            // 3. Memanggil method tambahJadwalDokter
+            // Panggil controller update
             boolean status = jdc.ubahJadwalDokter(kuota, sqlJamMulai, sqlJamSelesai, sqlTanggal, idJadwal);
 
-            // 4. Jika berhasil
-            if (status == true) {
-
-                // Autorefresh tabel
+            if (status) {
                 DefaultTableModel dtm = jdc.createTable();
                 this.TabelTambah.setModel(dtm);
                 this.TabelUpdate.setModel(dtm);
                 this.TabelHapus.setModel(dtm);
                 jdc.tampilkanJadwalDokter();
-
-                JOptionPane.showMessageDialog(this, "Berhasil mengubahjadwal");
+                JOptionPane.showMessageDialog(this, "Berhasil mengubah jadwal");
             } else {
                 JOptionPane.showMessageDialog(this, "Gagal mengubah jadwal");
             }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Input tidak valid: " + e.getMessage());
+            e.printStackTrace();
         }
+        System.out.println("DEBUG IDs: idJadwal=" + idJadwal + ", idDokter=" + this.jdc.getIdDokter());
+
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void TableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableMouseClicked
@@ -685,38 +691,38 @@ public class DokterView extends javax.swing.JFrame {
         // Ambil kuota → ke spinner
         int kuota = Integer.parseInt(dtm2.getValueAt(pilih, 5).toString());
         this.spUKuota.setValue(kuota);
-        
-        programmaticUpdate = true;
-        try {
-            spTanggal.setValue(new java.util.Date(sqlTanggal.getTime()));
-            spJamMulai.setValue(new java.util.Date(sqlJamMulai.getTime()));
-            spJamSelesai.setValue(new java.util.Date(sqlJamSelesai.getTime()));
-            spUKuota.setValue(kuota);
-        } finally {
-            programmaticUpdate = false;
-        }
+
+//        programmaticUpdate = true;
+//        try {
+//            spTanggal.setValue(new java.util.Date(sqlTanggal.getTime()));
+//            spJamMulai.setValue(new java.util.Date(sqlJamMulai.getTime()));
+//            spJamSelesai.setValue(new java.util.Date(sqlJamSelesai.getTime()));
+//            spUKuota.setValue(kuota);
+//        } finally {
+//            programmaticUpdate = false;
+//        }
     }//GEN-LAST:event_TableMouseClicked
 
     private void btnYaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnYaActionPerformed
         // TODO add your handling code here:
         // Hubungkan dengan controller
-        
+
         // Persiapan nilai
         int id = Integer.parseInt(this.lblDIdJadwal.getText());
-        
+
         // Panggil method hapus
         boolean status = jdc.hapusJadwalDokter(id);
-        
-        if(status == true){
+
+        if (status == true) {
             // Auto refresh
             DefaultTableModel dtm = jdc.createTable();
             this.TabelTambah.setModel(dtm);
             this.TabelUpdate.setModel(dtm);
             this.TabelHapus.setModel(dtm);
             jdc.tampilkanJadwalDokter();
-            
+
             JOptionPane.showMessageDialog(this, "Berhasil hapus data");
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "Gagal hapus data");
         }
     }//GEN-LAST:event_btnYaActionPerformed
