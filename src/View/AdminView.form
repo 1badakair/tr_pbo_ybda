@@ -146,8 +146,8 @@
                                               </Group>
                                               <Group type="102" alignment="1" attributes="0">
                                                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="cmbSpesialis" min="-2" pref="249" max="-2" attributes="0"/>
+                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                  <Component id="txtSpesialis" min="-2" pref="243" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                       </Group>
@@ -167,8 +167,8 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtId" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="cmbSpesialis" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtSpesialis" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -258,28 +258,6 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ClActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="cmbSpesialis">
-                  <Properties>
-                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="11">
-                        <StringItem index="0" value="Spesialis Anak"/>
-                        <StringItem index="1" value="Spesialis Penyakit Dalam"/>
-                        <StringItem index="2" value="Spesialis Bedah"/>
-                        <StringItem index="3" value="Spesialis Kebidanan dan Kandungan"/>
-                        <StringItem index="4" value="Spesialis Saraf"/>
-                        <StringItem index="5" value="Spesialis Kulit dan Kelamin"/>
-                        <StringItem index="6" value="Spesialis Mata"/>
-                        <StringItem index="7" value="Spesialis Telinga Hidung Tenggorokan"/>
-                        <StringItem index="8" value="Spesialis Jiwa"/>
-                        <StringItem index="9" value="Spesialis Jantung dan Pembuluh Darah"/>
-                        <StringItem index="10" value="Spesialis Paru"/>
-                      </StringArray>
-                    </Property>
-                  </Properties>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                  </AuxValues>
-                </Component>
                 <Component class="javax.swing.JTextField" name="txtNama">
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel6">
@@ -289,6 +267,8 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Spesialisasi      :"/>
                   </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtSpesialis">
                 </Component>
               </SubComponents>
             </Container>
@@ -326,17 +306,17 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jLabel14" min="-2" pref="104" max="-2" attributes="0"/>
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="cmbUSpesialis" pref="0" max="32767" attributes="0"/>
+                                          <Component id="txtUSpesialis" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
-                                  <EmptySpace pref="13" max="32767" attributes="0"/>
-                                  <Component id="jLabel19" min="-2" pref="104" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtUCari" min="-2" pref="185" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
+                                  <EmptySpace pref="23" max="32767" attributes="0"/>
+                                  <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="lblUId" min="-2" pref="189" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jButton2" min="-2" pref="84" max="-2" attributes="0"/>
-                                      <Component id="jButton4" min="-2" pref="84" max="-2" attributes="0"/>
+                                      <Component id="jButton4" max="32767" attributes="0"/>
+                                      <Component id="jButton2" pref="84" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -353,15 +333,15 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtUNama" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtUCari" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblUId" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="cmbUSpesialis" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtUSpesialis" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="17" max="32767" attributes="0"/>
                       </Group>
@@ -430,43 +410,23 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="14" style="0"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Cari               :"/>
+                    <Property name="text" type="java.lang.String" value="ID               :"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtUCari">
+                <Component class="javax.swing.JTextField" name="txtUSpesialis">
                 </Component>
                 <Component class="javax.swing.JButton" name="jButton4">
                   <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="99" green="ff" red="ff" type="rgb"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="Cari"/>
+                    <Property name="text" type="java.lang.String" value="Clear"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton4ActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="cmbUSpesialis">
+                <Component class="javax.swing.JLabel" name="lblUId">
                   <Properties>
-                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="11">
-                        <StringItem index="0" value="Spesialis Anak"/>
-                        <StringItem index="1" value="Spesialis Penyakit Dalam"/>
-                        <StringItem index="2" value="Spesialis Bedah"/>
-                        <StringItem index="3" value="Spesialis Kebidanan dan Kandungan"/>
-                        <StringItem index="4" value="Spesialis Saraf"/>
-                        <StringItem index="5" value="Spesialis Kulit dan Kelamin"/>
-                        <StringItem index="6" value="Spesialis Mata"/>
-                        <StringItem index="7" value="Spesialis Telinga Hidung Tenggorokan"/>
-                        <StringItem index="8" value="Spesialis Jiwa"/>
-                        <StringItem index="9" value="Spesialis Jantung dan Pembuluh Darah"/>
-                        <StringItem index="10" value="Spesialis Paru"/>
-                      </StringArray>
-                    </Property>
+                    <Property name="text" type="java.lang.String" value="-"/>
                   </Properties>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>

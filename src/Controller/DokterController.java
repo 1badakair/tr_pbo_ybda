@@ -1,4 +1,3 @@
-
 package Controller;
 
 import Model.Dokter;
@@ -85,9 +84,10 @@ public class DokterController {
     }
 
     // Method 4: UPDATE
-    public boolean ubahDokter( String b, String c) {
+    public boolean ubahDokter(String a, String b, String c) {
 
         Dokter dk = new Dokter();
+        dk.setId_dokter(a);        // <-- TAMBAHKAN INI
         dk.setNama_dokter(b);
         dk.setSpesialisasi(c);
 
@@ -98,8 +98,10 @@ public class DokterController {
                     + "' WHERE id_dokter='" + dk.getId_dokter() + "'";
 
             // Jalankan query
-            this.stm.executeUpdate(sql);
-            return true;
+            int hasil = this.stm.executeUpdate(sql);
+
+            // Jika tidak ada baris terupdate => gagal
+            return hasil > 0;
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -126,4 +128,3 @@ public class DokterController {
     }
 
 }
-
