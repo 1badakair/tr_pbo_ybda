@@ -51,21 +51,24 @@ public class PasienView extends javax.swing.JFrame {
 
       
     private void myCustomInit() {
-        // 1. Tampilkan Nama User
-        lblTampilNama.setText("Halo, " + UserSession.getNama()); 
-        
-        // 2. TAMPILKAN UMUR (Kodingan Baru)
-        // Pastikan kamu sudah membuat label bernama lblTampilUmur di Design
-//        if (lblTampilUmur != null) {
-//            lblTampilUmur.setText("Umur: " + UserSession.getUmur() + " Tahun");
-//        }
 
-        // 3. Load Data Tabel Status
-        refreshTabelStatus(); 
-        
-        // 4. Posisikan layar di tengah
-        setLocationRelativeTo(null); 
+    // Nama dari session
+    lblTampilNama.setText("Halo, " + UserSession.getNama());
+
+    // 🔹 Ambil umur dari database
+    String idPasien = UserSession.getIdPasien();
+    int umur = pasienController.getUmurPasien(idPasien);
+
+    if (umur > 0) {
+        lblUmur.setText("Umur : " + umur + " tahun");
+    } else {
+        lblUmur.setText("Umur : -");
     }
+
+    refreshTabelStatus();
+    setLocationRelativeTo(null);
+}
+
     
     // ===============================
 // POPUP PILIH JADWAL
@@ -168,8 +171,7 @@ private void openPilihJadwalPopup() {
         lblTampilNama = new javax.swing.JLabel();
         btnCariJadwal = new javax.swing.JButton();
         lblJadwalTerpilih = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        lblUmur = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabelStatus = new javax.swing.JTable();
@@ -250,13 +252,9 @@ private void openPilihJadwalPopup() {
         lblJadwalTerpilih.setForeground(new java.awt.Color(51, 51, 51));
         lblJadwalTerpilih.setText("Belum Memilih Jadwal.");
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel8.setText("Umur :");
-
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel4.setText("-");
+        lblUmur.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblUmur.setForeground(new java.awt.Color(0, 0, 0));
+        lblUmur.setText("-");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -280,13 +278,10 @@ private void openPilihJadwalPopup() {
                                             .addComponent(lblJadwal)))
                                     .addComponent(jLabel3)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel8)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel7)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lblTampilNama)))
+                                        .addComponent(lblTampilNama))
+                                    .addComponent(lblUmur, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -305,9 +300,7 @@ private void openPilihJadwalPopup() {
                     .addComponent(jLabel7)
                     .addComponent(lblTampilNama))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel4))
+                .addComponent(lblUmur)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -535,10 +528,8 @@ private void openPilihJadwalPopup() {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -548,6 +539,7 @@ private void openPilihJadwalPopup() {
     private javax.swing.JLabel lblJadwal;
     private javax.swing.JLabel lblJadwalTerpilih;
     private javax.swing.JLabel lblTampilNama;
+    private javax.swing.JLabel lblUmur;
     private javax.swing.JTable tabelStatus;
     private javax.swing.JTextArea txtKeluhan;
     // End of variables declaration//GEN-END:variables

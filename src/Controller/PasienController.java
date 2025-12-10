@@ -166,6 +166,22 @@ public List<ComboItem> getSemuaDokterCombo() {
     return list;
 }
 
+public int getUmurPasien(String idPasien) {
+    int umur = -1;
+
+    try {
+        String sql = "SELECT umur FROM tb_pasien WHERE id_pasien = '" + idPasien + "'";
+        ResultSet rs = stm.executeQuery(sql);
+
+        if (rs.next()) {
+            umur = rs.getInt("umur");
+        }
+    } catch (Exception e) {
+        System.out.println("Error get umur: " + e.getMessage());
+    }
+
+    return umur;
+}
 
 
 
