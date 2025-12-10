@@ -21,43 +21,34 @@ public class DokterView extends javax.swing.JFrame {
      */
     private JadwalDokterController jdc;
     private int idJadwal = 0;
+    private String idPendaftaran = null;
 
 //    private javax.swing.event.ChangeListener jamMulaiListener;
 //    private javax.swing.event.ChangeListener jamSelesaiListener;
 //    private boolean programmaticUpdate = false;
     public DokterView() {
         initComponents();
+        tampilkanDaftarPasien();
+
     }
 
     public DokterView(String idDokter, String nama_dokter) {
         initComponents();
-
-//        jamMulaiListener = e -> {
-//            if (programmaticUpdate) {
-//                return; // kalau setValue dari kode → abaikan
-//            }    // kode listener (kalau ada)
-//        };
-//
-//        spJamMulai.addChangeListener(jamMulaiListener);
-//
-//        jamSelesaiListener = e -> {
-//            if (programmaticUpdate) {
-//                return;
-//            }
-//            // kode listener (kalau ada)
-//        };
-//
-//        spJamSelesai.addChangeListener(jamSelesaiListener);
+        
         this.jLabel1.setText("Selamat Datang " + nama_dokter);
         this.jLabel3.setText(nama_dokter);
         this.jLabel10.setText(nama_dokter);
 
         this.jdc = new JadwalDokterController(idDokter);
+        
+        // Setup Tabel Jadwal (Tab 1, 2, 3)
         DefaultTableModel dtm = this.jdc.createTable();
         this.TabelTambah.setModel(dtm);
         this.TabelUpdate.setModel(dtm);
         this.TabelHapus.setModel(dtm);
         this.jdc.tampilkanJadwalDokter();
+        
+        tampilkanDaftarPasien(); // <-- Tambahkan baris ini
     }
 
     /**
@@ -112,10 +103,11 @@ public class DokterView extends javax.swing.JFrame {
         btnYa = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jButton3 = new javax.swing.JButton();
+        cbStatus = new javax.swing.JComboBox<>();
+        btnUpdateStatus = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tabelStatus = new javax.swing.JTable();
+        btnLogout = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -477,13 +469,23 @@ public class DokterView extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setText("Status");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Diterima", "Ditolak", "Menunggu", " " }));
+        cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Diterima", "Ditolak", "Menunggu", " " }));
+        cbStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbStatusActionPerformed(evt);
+            }
+        });
 
-        jButton3.setBackground(new java.awt.Color(102, 255, 204));
-        jButton3.setText("Update");
+        btnUpdateStatus.setBackground(new java.awt.Color(102, 255, 204));
+        btnUpdateStatus.setText("Update");
+        btnUpdateStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateStatusActionPerformed(evt);
+            }
+        });
 
-        jTable3.setBackground(new java.awt.Color(204, 255, 255));
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tabelStatus.setBackground(new java.awt.Color(204, 255, 255));
+        tabelStatus.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -494,7 +496,12 @@ public class DokterView extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane3.setViewportView(jTable3);
+        tabelStatus.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelStatusMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tabelStatus);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -504,9 +511,9 @@ public class DokterView extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 518, Short.MAX_VALUE)
-                .addComponent(jButton3)
+                .addComponent(btnUpdateStatus)
                 .addGap(16, 16, 16))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
@@ -520,8 +527,8 @@ public class DokterView extends javax.swing.JFrame {
                 .addContainerGap(429, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
+                    .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdateStatus))
                 .addGap(13, 13, 13))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
@@ -532,6 +539,14 @@ public class DokterView extends javax.swing.JFrame {
 
         jTabbedPane4.addTab("Verifikasi", jPanel4);
 
+        btnLogout.setBackground(new java.awt.Color(204, 0, 0));
+        btnLogout.setText("Logout");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -541,15 +556,21 @@ public class DokterView extends javax.swing.JFrame {
                 .addGap(52, 52, 52)
                 .addComponent(jTabbedPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 805, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(43, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnLogout)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
+                .addComponent(btnLogout)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -758,6 +779,96 @@ public class DokterView extends javax.swing.JFrame {
         this.lblDIdJadwal.setText("-");
     }//GEN-LAST:event_btnTidakActionPerformed
 
+    private void cbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbStatusActionPerformed
+
+    private void btnUpdateStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateStatusActionPerformed
+        if (idPendaftaran == null || idPendaftaran.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Pilih pasien terlebih dahulu!");
+            return;
+        }
+
+        String statusBaru = cbStatus.getSelectedItem().toString();
+        boolean berhasil = jdc.updateStatusPasien(idPendaftaran, statusBaru);
+
+        if (berhasil) {
+            JOptionPane.showMessageDialog(this, "Status berhasil diupdate!");
+            tampilkanDaftarPasien();
+        } else {
+            JOptionPane.showMessageDialog(this, "Gagal mengupdate status.");
+        }
+
+    }//GEN-LAST:event_btnUpdateStatusActionPerformed
+
+    private void tabelStatusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelStatusMouseClicked
+        int row = tabelStatus.getSelectedRow();
+
+    if (row > -1) {
+        idPendaftaran = tabelStatus.getValueAt(row, 0).toString();
+
+        String status = tabelStatus.getValueAt(row, 4).toString();
+        cbStatus.setSelectedItem(status);
+    }
+    }//GEN-LAST:event_tabelStatusMouseClicked
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+         // 1. Tampilkan Popup Konfirmasi (Yes/No)
+        int jawaban = JOptionPane.showConfirmDialog(
+            this, 
+            "Apakah Anda yakin ingin Logout?", 
+            "Konfirmasi Logout", 
+            JOptionPane.YES_NO_OPTION
+        );
+        
+        // 2. Cek Jawaban User
+        if (jawaban == JOptionPane.YES_OPTION) {
+            // Jika pilih YES:
+            
+            // Bersihkan data session (Logout)
+            Utility.UserSession.clear();
+            
+            // Buka kembali halaman Login
+            new LoginView().setVisible(true);
+            
+            // Tutup halaman Dashboard saat ini
+            this.dispose();
+    }//GEN-LAST:event_btnLogoutActionPerformed
+    }
+    // ==========================================
+    // LOGIKA TAB VERIFIKASI (Perbaikan)
+    // ==========================================
+
+    // 1. Method untuk menampilkan data ke jTable3
+    private void tampilkanDaftarPasien() {
+        // Asumsi: Controller kamu punya method 'getDaftarPasien()'
+        // Jika belum ada, kamu harus membuatnya di JadwalDokterController
+        if (this.jdc != null) {
+            DefaultTableModel dtmPasien = this.jdc.getDaftarPasien(); 
+            this.tabelStatus.setModel(dtmPasien);
+        }
+    }
+
+    // 2. Event saat Baris Tabel Verifikasi (jTable3) diklik
+    private void TableVerifikasiMouseClicked(java.awt.event.MouseEvent evt) {
+        int baris = tabelStatus.getSelectedRow();
+
+    if (baris > -1) {
+
+        // Ambil ID janji (STRING)
+        this.idPendaftaran = tabelStatus.getValueAt(baris, 0).toString();
+
+        // Ambil status dari kolom 4
+        Object statusObj = tabelStatus.getValueAt(baris, 4);
+        if (statusObj != null) {
+            cbStatus.setSelectedItem(statusObj.toString());
+        }
+    }
+        
+        
+    }
+
+    
     /**
      * @param args the command line arguments
      */
@@ -810,12 +921,13 @@ public class DokterView extends javax.swing.JFrame {
     private javax.swing.JTable TabelHapus;
     private javax.swing.JTable TabelTambah;
     private javax.swing.JTable TabelUpdate;
+    private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnTambah;
     private javax.swing.JButton btnTidak;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton btnUpdateStatus;
     private javax.swing.JButton btnYa;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> cbStatus;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -843,7 +955,6 @@ public class DokterView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane4;
-    private javax.swing.JTable jTable3;
     private javax.swing.JLabel lblDIdJadwal;
     private javax.swing.JLabel lblUIdJadwal;
     private javax.swing.JSpinner spJamMulai;
@@ -854,5 +965,6 @@ public class DokterView extends javax.swing.JFrame {
     private javax.swing.JSpinner spUJamSelesai;
     private javax.swing.JSpinner spUKuota;
     private javax.swing.JSpinner spUTanggal;
+    private javax.swing.JTable tabelStatus;
     // End of variables declaration//GEN-END:variables
 }

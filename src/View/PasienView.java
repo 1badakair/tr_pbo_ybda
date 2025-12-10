@@ -383,8 +383,7 @@ private void openPilihJadwalPopup() {
 
         jTabbedPane1.addTab("Status Janji Temu", jPanel3);
 
-        btnLogout.setBackground(new java.awt.Color(255, 51, 51));
-        btnLogout.setForeground(new java.awt.Color(0, 0, 0));
+        btnLogout.setBackground(new java.awt.Color(204, 0, 0));
         btnLogout.setText("Logout");
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
