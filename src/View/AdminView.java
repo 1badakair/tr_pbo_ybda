@@ -96,7 +96,7 @@ public class AdminView extends javax.swing.JFrame {
 
         jLabel23.setFont(new java.awt.Font("Bahnschrift", 1, 36)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel23.setText("DASHBOARD ADMIN");
 
         Jpannel.setBackground(new java.awt.Color(255, 255, 153));

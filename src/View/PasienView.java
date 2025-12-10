@@ -17,135 +17,121 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author LENOVO
  */
-
-
 public class PasienView extends javax.swing.JFrame {
+
     PasienController pasienController;
     JanjiController janjiController;
     // untuk menyimpan hasil pilihan dialog
     private int pickedIdJadwal = -1;
     private String pickedJadwalText = null;
 
-   
-    /**
-     * Creates new form DashboardUserView
-     */
-    /**
-     * Creates new form DashboardUserView
-     */
     public PasienView() {
-    initComponents();
-
-    if (UserSession.getNama() == null) {
-        JOptionPane.showMessageDialog(this, "Session tidak ditemukan! Silakan login ulang.");
-        dispose();
-        new LoginView().setVisible(true);
-        return;
+        initComponents();
     }
 
-    pasienController = new PasienController();
-    janjiController = new JanjiController();
+    public PasienView(String nama_pasien) {
+        this.jLabel4.setText("Hallo Selamat Datang " + nama_pasien);
+        initComponents();
 
-    myCustomInit();
-}
+        if (UserSession.getNama() == null) {
+            JOptionPane.showMessageDialog(this, "Session tidak ditemukan! Silakan login ulang.");
+            dispose();
+            new LoginView().setVisible(true);
+            return;
+        }
 
-      
+        pasienController = new PasienController();
+        janjiController = new JanjiController();
+
+        myCustomInit();
+    }
+
     private void myCustomInit() {
 
-    // Nama dari session
-    lblTampilNama.setText("Halo, " + UserSession.getNama());
+        // Nama dari session
+        lblTampilNama.setText("Halo, " + UserSession.getNama());
 
-    // 🔹 Ambil umur dari database
-    String idPasien = UserSession.getIdPasien();
-    int umur = pasienController.getUmurPasien(idPasien);
+        // 🔹 Ambil umur dari database
+        String idPasien = UserSession.getIdPasien();
+        int umur = pasienController.getUmurPasien(idPasien);
 
-    if (umur > 0) {
-        lblUmur.setText("Umur : " + umur + " tahun");
-    } else {
-        lblUmur.setText("Umur : -");
+        if (umur > 0) {
+            lblUmur.setText("Umur : " + umur + " tahun");
+        } else {
+            lblUmur.setText("Umur : -");
+        }
+
+        refreshTabelStatus();
+        setLocationRelativeTo(null);
     }
 
-    refreshTabelStatus();
-    setLocationRelativeTo(null);
-}
-
-    
     // ===============================
 // POPUP PILIH JADWAL
 // ===============================
-private void openPilihJadwalPopup() {
+    private void openPilihJadwalPopup() {
 
-    PilihJadwal dialog = new PilihJadwal(
-            this,
-            (idJadwal, summary) -> {
-                pickedIdJadwal = idJadwal;
-                pickedJadwalText = summary;
-                lblJadwalTerpilih.setText("Dipilih: " + summary);
-            }
-    );
+        PilihJadwal dialog = new PilihJadwal(
+                this,
+                (idJadwal, summary) -> {
+                    pickedIdJadwal = idJadwal;
+                    pickedJadwalText = summary;
+                    lblJadwalTerpilih.setText("Dipilih: " + summary);
+                }
+        );
 
-    dialog.setVisible(true);
-}
+        dialog.setVisible(true);
+    }
 
-
-    
     // ================= KIRIM JANJI TEMU =================
     public void aksiSimpanJanji() {
 
-    String idPasien = UserSession.getIdPasien(); 
-    String keluhan = txtKeluhan.getText().trim();
+        String idPasien = UserSession.getIdPasien();
+        String keluhan = txtKeluhan.getText().trim();
 
-    if (keluhan.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Mohon isi keluhan Anda!");
-        return;
+        if (keluhan.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Mohon isi keluhan Anda!");
+            return;
+        }
+
+        if (pickedIdJadwal == -1) {
+            JOptionPane.showMessageDialog(this, "Silakan pilih jadwal terlebih dahulu!");
+            return;
+        }
+
+        boolean berhasil = janjiController.tambahJanjiTemu(pickedIdJadwal, idPasien, keluhan);
+
+        if (berhasil) {
+            JOptionPane.showMessageDialog(this, "Berhasil! Janji Temu telah dibuat.");
+            bersihkanForm();
+            refreshTabelStatus();
+        } else {
+            JOptionPane.showMessageDialog(this, "Gagal menyimpan. Silakan coba lagi.");
+        }
     }
-
-    if (pickedIdJadwal == -1) {
-        JOptionPane.showMessageDialog(this, "Silakan pilih jadwal terlebih dahulu!");
-        return;
-    }
-
-    boolean berhasil = janjiController.tambahJanjiTemu(pickedIdJadwal, idPasien, keluhan);
-
-    if (berhasil) {
-        JOptionPane.showMessageDialog(this, "Berhasil! Janji Temu telah dibuat.");
-        bersihkanForm();
-        refreshTabelStatus();
-    } else {
-        JOptionPane.showMessageDialog(this, "Gagal menyimpan. Silakan coba lagi.");
-    }
-}
-
 
     // Method untuk membersihkan form input
     private void bersihkanForm() {
-    txtKeluhan.setText("");
-    pickedIdJadwal = -1;
-    pickedJadwalText = null;
-    lblJadwalTerpilih.setText("Belum memilih jadwal");
+        txtKeluhan.setText("");
+        pickedIdJadwal = -1;
+        pickedJadwalText = null;
+        lblJadwalTerpilih.setText("Belum memilih jadwal");
     }
 
-    
-    
     // Method untuk me-refresh tabel status (Tab 2)
     private void refreshTabelStatus() {
-    try {
-        DefaultTableModel model = janjiController.createTable();
-        tabelStatus.setModel(model);
-        janjiController.tampilkanRiwayat();
-    } catch (Exception ex) {
-        System.out.println("Gagal refresh tabel: " + ex.getMessage());
+        try {
+            DefaultTableModel model = janjiController.createTable();
+            tabelStatus.setModel(model);
+            janjiController.tampilkanRiwayat();
+        } catch (Exception ex) {
+            System.out.println("Gagal refresh tabel: " + ex.getMessage());
+        }
     }
-}
 
-    
     private void clearStatusTable() {
-    DefaultTableModel model = (DefaultTableModel) tabelStatus.getModel();
-    model.setRowCount(0); // hapus semua baris
-}
-    
-
-
+        DefaultTableModel model = (DefaultTableModel) tabelStatus.getModel();
+        model.setRowCount(0); // hapus semua baris
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -178,6 +164,7 @@ private void openPilihJadwalPopup() {
         jLabel6 = new javax.swing.JLabel();
         btnClearTbl = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -240,7 +227,6 @@ private void openPilihJadwalPopup() {
         lblTampilNama.setText("-");
 
         btnCariJadwal.setBackground(new java.awt.Color(255, 255, 153));
-        btnCariJadwal.setForeground(new java.awt.Color(0, 0, 0));
         btnCariJadwal.setText("Cari Jadwal");
         btnCariJadwal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -253,7 +239,6 @@ private void openPilihJadwalPopup() {
         lblJadwalTerpilih.setText("Belum Memilih Jadwal.");
 
         lblUmur.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblUmur.setForeground(new java.awt.Color(0, 0, 0));
         lblUmur.setText("-");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -347,7 +332,6 @@ private void openPilihJadwalPopup() {
         jLabel6.setText("Riwayat Pengajuan Janji Temu");
 
         btnClearTbl.setBackground(new java.awt.Color(255, 255, 153));
-        btnClearTbl.setForeground(new java.awt.Color(0, 0, 0));
         btnClearTbl.setText("Clear");
         btnClearTbl.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -383,7 +367,7 @@ private void openPilihJadwalPopup() {
 
         jTabbedPane1.addTab("Status Janji Temu", jPanel3);
 
-        btnLogout.setBackground(new java.awt.Color(204, 0, 0));
+        btnLogout.setBackground(new java.awt.Color(255, 153, 153));
         btnLogout.setText("Logout");
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -391,33 +375,45 @@ private void openPilihJadwalPopup() {
             }
         });
 
+        jLabel4.setBackground(new java.awt.Color(0, 119, 182));
+        jLabel4.setFont(new java.awt.Font("Bahnschrift", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel4.setText("-");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 889, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnLogout)))
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(84, 84, 84)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 735, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(415, 415, 415)
+                        .addComponent(btnLogout))
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 735, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(487, 487, 487)))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnLogout)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel1)
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel4)
+                        .addGap(27, 27, 27))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnLogout)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -449,37 +445,36 @@ private void openPilihJadwalPopup() {
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // 1. Tampilkan Popup Konfirmasi (Yes/No)
         int jawaban = JOptionPane.showConfirmDialog(
-            this, 
-            "Apakah Anda yakin ingin Logout?", 
-            "Konfirmasi Logout", 
-            JOptionPane.YES_NO_OPTION
+                this,
+                "Apakah Anda yakin ingin Logout?",
+                "Konfirmasi Logout",
+                JOptionPane.YES_NO_OPTION
         );
-        
+
         // 2. Cek Jawaban User
         if (jawaban == JOptionPane.YES_OPTION) {
             // Jika pilih YES:
-            
+
             // Bersihkan data session (Logout)
             Utility.UserSession.clear();
-            
+
             // Buka kembali halaman Login
             new LoginView().setVisible(true);
-            
+
             // Tutup halaman Dashboard saat ini
             this.dispose();
-        } 
+        }
         // Jika pilih NO, tidak terjadi apa-apa (tetap di dashboard)
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void btnCariJadwalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariJadwalActionPerformed
-       openPilihJadwalPopup();
+        openPilihJadwalPopup();
     }//GEN-LAST:event_btnCariJadwalActionPerformed
 
     private void tabelStatusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelStatusMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_tabelStatusMouseClicked
 
-    
     /**
      * @param args the command line arguments
      */
@@ -527,6 +522,7 @@ private void openPilihJadwalPopup() {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;

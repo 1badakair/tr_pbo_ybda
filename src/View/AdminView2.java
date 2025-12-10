@@ -31,7 +31,7 @@ public class AdminView2 extends javax.swing.JFrame {
 
     public AdminView2(String nama_admin) {
         initComponents();
-        this.jLabel1.setText("Selamat Datang " + nama_admin); // Agar ketika form dashboard di Load, tabelnya auto terisi 
+        this.txtTulisan.setText("Selamat Datang " + nama_admin); // Agar ketika form dashboard di Load, tabelnya auto terisi 
         this.jc = new JadwalController();
         DefaultTableModel dtm = jc.createTable();
         // Menerapkan desain tabel (virtual) ke TabelSelect (tabel benaran) 
@@ -51,7 +51,7 @@ public class AdminView2 extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabell1 = new javax.swing.JLabel();
         Jpannel = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -98,16 +98,17 @@ public class AdminView2 extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
+        txtTulisan = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(72, 202, 228));
 
-        jLabel1.setFont(new java.awt.Font("Bahnschrift", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel1.setText("TAMBAH JADWAL");
-        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabell1.setFont(new java.awt.Font("Bahnschrift", 1, 36)); // NOI18N
+        jLabell1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabell1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabell1.setText("TAMBAH JADWAL");
+        jLabell1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         Jpannel.setBackground(new java.awt.Color(255, 255, 153));
 
@@ -464,6 +465,11 @@ public class AdminView2 extends javax.swing.JFrame {
 
         jButton6.setBackground(new java.awt.Color(255, 153, 153));
         jButton6.setText("Log out");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setBackground(new java.awt.Color(153, 255, 153));
         jButton7.setText("Dokter");
@@ -473,33 +479,47 @@ public class AdminView2 extends javax.swing.JFrame {
             }
         });
 
+        txtTulisan.setFont(new java.awt.Font("Bahnschrift", 1, 14)); // NOI18N
+        txtTulisan.setForeground(new java.awt.Color(255, 255, 255));
+        txtTulisan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        txtTulisan.setText("-");
+        txtTulisan.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 679, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton6))
-                    .addComponent(Jpannel, javax.swing.GroupLayout.PREFERRED_SIZE, 804, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(49, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(Jpannel, javax.swing.GroupLayout.PREFERRED_SIZE, 804, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton6))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtTulisan, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabell1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(47, 47, 47))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
+                .addComponent(jLabell1)
+                .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7))
+                    .addComponent(txtTulisan)
+                    .addComponent(jButton7)
+                    .addComponent(jButton6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Jpannel, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -522,7 +542,7 @@ public class AdminView2 extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        String teksLabel = this.jLabel1.getText();
+        String teksLabel = this.txtTulisan.getText();
 
         // 2. Bersihkan teks agar hanya tersisa namanya saja
         // (Misal: "Selamat Datang Budi" menjadi "Budi")
@@ -682,6 +702,10 @@ public class AdminView2 extends javax.swing.JFrame {
         System.out.println("DEBUG IDs: idJadwal=" + idJadwal);
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -723,7 +747,6 @@ public class AdminView2 extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -742,6 +765,7 @@ public class AdminView2 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabell1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -755,6 +779,7 @@ public class AdminView2 extends javax.swing.JFrame {
     private javax.swing.JSpinner spUKuota;
     private javax.swing.JSpinner spUTanggal;
     private javax.swing.JTextField txtIdDokter;
+    private javax.swing.JLabel txtTulisan;
     private javax.swing.JTextField txtUIdDokter;
     // End of variables declaration//GEN-END:variables
 }
