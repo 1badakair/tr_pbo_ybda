@@ -1,31 +1,33 @@
 package Utility;
 
 public class UserSession {
-
-    private static Integer idUser;   // Integer -> bisa NULL
-    private static String idPasien;
+    private static int idUser;
+    private static String idPasien; 
     private static String nama;
     private static String role;
+    // Variabel umur DIHAPUS
 
-    // Setter: Dipanggil saat Login berhasil
-    public static void setUser(Integer idUser, String idPasien, String nama, String role) {
+    // Balikkan ke 4 parameter saja (HAPUS parameter String umur)
+    public static void setUser(int idUser, String idRef, String nama, String role) {
         UserSession.idUser = idUser;
-        UserSession.idPasien = idPasien;
+        UserSession.idPasien = idRef;
         UserSession.nama = nama;
         UserSession.role = role;
+        // Baris this.umur = umur DIHAPUS
     }
 
-    // Getter
-    public static Integer getIdUser() { return idUser; }
+    public static int getIdUser() { return idUser; }
     public static String getIdPasien() { return idPasien; }
     public static String getNama() { return nama; }
     public static String getRole() { return role; }
+    
+    // Getter getUmur() DIHAPUS
 
-    // CLEAR SESSION (dipanggil saat logout)
     public static void clear() {
-        idUser = null;
+        idUser = 0;
         idPasien = null;
         nama = null;
         role = null;
+        // Pembersihan umur DIHAPUS
     }
 }

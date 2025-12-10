@@ -23,7 +23,7 @@ public class AuthController {
 
     public String cekLogin(String username, String plainPassword) {
         User usr = new User();
-        usr.setUsername(username);   // kamu tetap boleh pakai ini
+        usr.setUsername(username);   
 
         try {
             this.sql = "SELECT * FROM tb_user WHERE username = '" + usr.getUsername() + "'";
@@ -59,6 +59,8 @@ public class AuthController {
         return this.loggedUserId;
     }
 
+    // --- BAGIAN DOKTER ---
+    
     // cari id_dokter dari id_user
     public String getIdDokterByUserId(int id_user) {
         try {
@@ -84,5 +86,51 @@ public class AuthController {
             System.out.println("Error getNamaDokter: " + e.getMessage());
         }
         return null;
+    }
+
+    // --- BAGIAN PASIEN (INI YANG BARU DITAMBAHKAN) ---
+    
+    // 1. Ambil ID Pasien berdasarkan id_user
+    public String getIdPasienByUserId(int id_user) {
+        try {
+            this.sql = "SELECT id_pasien FROM tb_pasien WHERE id_user = " + id_user;
+            this.res = this.stm.executeQuery(sql);
+            if (res.next()) {
+                return res.getString("id_pasien");
+            }
+        } catch (Exception e) {
+            System.out.println("Error getIdPasien: " + e.getMessage());
+        }
+        return null;
+    }
+
+    // 2. Ambil Nama Pasien berdasarkan id_user
+    public String getNamaPasienByUserId(int id_user) {
+        try {
+            // Pastikan kolom di database namanya 'nama_pasien' atau hanya 'nama'
+            this.sql = "SELECT nama_pasien FROM tb_pasien WHERE id_user = " + id_user;
+            this.res = this.stm.executeQuery(sql);
+            if (res.next()) {
+                return res.getString("nama_pasien");
+            }
+        } catch (Exception e) {
+            System.out.println("Error getNamaPasien: " + e.getMessage());
+        }
+        return null;
+    }
+    
+    // --- TAMBAHAN UNTUK AMBIL UMUR ---
+    public String getUmurPasienByUserId(int id_user) {
+        try {
+            // Pastikan nama kolom di database kamu adalah 'umur'
+            this.sql = "SELECT umur FROM tb_pasien WHERE id_user = " + id_user;
+            this.res = this.stm.executeQuery(sql);
+            if (res.next()) {
+                return res.getString("umur");
+            }
+        } catch (Exception e) {
+            System.out.println("Error getUmur: " + e.getMessage());
+        }
+        return "-"; // Default jika tidak ditemukan
     }
 }

@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  * @author LENOVO
  */
 public class LoginView extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form LoginView
      */
@@ -157,25 +157,30 @@ public class LoginView extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUsernameActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        //Menghubungkan objek
+        // Menghubungkan objek
         AuthController auth = new AuthController();
-
+        
+        // Cek username & password
         String role = auth.cekLogin(txtUsername.getText(), txtPassword.getText());
 
         if (role == null) {
             JOptionPane.showMessageDialog(this, "Login gagal");
             return;
         }
+        
+        // --- TAMBAHAN PENTING: Import UserSession di bagian paling atas file ---
+        // import Utility.UserSession; 
 
         switch (role) {
             case "dokter":
                 JOptionPane.showMessageDialog(this, "Login Berhasil!!");
-
-                int userId = auth.getLoggedUserId(); // id_user dokter
-                String idDokter = auth.getIdDokterByUserId(userId);
-                String namaDokter = auth.getNamaDokterByUserId(userId); // AMBIL NAMA DOKTER
-
+                int userIdDokter = auth.getLoggedUserId();
+                String idDokter = auth.getIdDokterByUserId(userIdDokter);
+                String namaDokter = auth.getNamaDokterByUserId(userIdDokter);
+                
+                // Opsional: Set session juga untuk dokter agar konsisten
+                Utility.UserSession.setUser(userIdDokter, idDokter, namaDokter, "dokter");
+                
                 DokterView dv = new DokterView(idDokter, namaDokter);
                 dv.setVisible(true);
                 this.setVisible(false);
@@ -183,6 +188,9 @@ public class LoginView extends javax.swing.JFrame {
 
             case "admin":
                 JOptionPane.showMessageDialog(this, "Login berhasil");
+                // Admin mungkin tidak butuh ID ribet, tapi bisa diset kalau perlu
+                Utility.UserSession.setUser(0, "A001", "Admin", "admin");
+                
                 AdminView av = new AdminView(txtUsername.getText());
                 av.setVisible(true);
                 this.setVisible(false);
@@ -190,21 +198,21 @@ public class LoginView extends javax.swing.JFrame {
 
             case "pasien":
                 JOptionPane.showMessageDialog(this, "Login berhasil");
+
+                int userIdPasien = auth.getLoggedUserId(); 
+                String idPasien = auth.getIdPasienByUserId(userIdPasien); 
+                String namaPasien = auth.getNamaPasienByUserId(userIdPasien);
+
+                // Kodingan ambil umur DIHAPUS saja
+
+                // Hapus parameter terakhir
+                Utility.UserSession.setUser(userIdPasien, idPasien, namaPasien, "pasien");
+
                 PasienView pv = new PasienView();
                 pv.setVisible(true);
                 this.setVisible(false);
                 break;
         }
-
-//        if (cekLogin == true) {
-//            JOptionPane.showMessageDialog(this, "Login Berhasil!!");
-//            DashboardAdminView dsh = new DashboardAdminView(this.txtUsername.getText());
-//            dsh.setVisible(true);
-//            this.setVisible(false);
-//
-//        } else {
-//            JOptionPane.showMessageDialog(this, "Login Gagal!!");
-//        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

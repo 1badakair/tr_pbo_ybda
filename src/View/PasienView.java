@@ -30,32 +30,37 @@ public class PasienView extends javax.swing.JFrame {
     /**
      * Creates new form DashboardUserView
      */
+    /**
+     * Creates new form DashboardUserView
+     */
     public PasienView() {
-        initComponents();
-        
-        // --- SIMULASI SESSION (HAPUS JIKA SUDAH ADA LOGIN) ---
-        // Jika belum login, kita paksa login sebagai user ID 4 (Pasien P001)
-        // Simulasi login jika belum ada session
-        if (UserSession.getIdPasien() == null) {
-            UserSession.setUser(4, "P001", "Dhika Primanda", "pasien");
-        }
-        // -----------------------------------------------------
-        
-        // Inisialisasi Controller
-        pasienController = new PasienController();
-        janjiController = new JanjiController();
-        
-        // Jalankan setup awal
-        myCustomInit();
-    }    
+    initComponents();
+
+    if (UserSession.getNama() == null) {
+        JOptionPane.showMessageDialog(this, "Session tidak ditemukan! Silakan login ulang.");
+        dispose();
+        new LoginView().setVisible(true);
+        return;
+    }
+
+    pasienController = new PasienController();
+    janjiController = new JanjiController();
+
+    myCustomInit();
+}
+
       
     private void myCustomInit() {
-        // 1. Tampilkan Nama User di Label
+        // 1. Tampilkan Nama User
         lblTampilNama.setText("Halo, " + UserSession.getNama()); 
         
-         
-        
-        // 3. Load Data Tabel Status (Tab Sebelah)
+        // 2. TAMPILKAN UMUR (Kodingan Baru)
+        // Pastikan kamu sudah membuat label bernama lblTampilUmur di Design
+//        if (lblTampilUmur != null) {
+//            lblTampilUmur.setText("Umur: " + UserSession.getUmur() + " Tahun");
+//        }
+
+        // 3. Load Data Tabel Status
         refreshTabelStatus(); 
         
         // 4. Posisikan layar di tengah
@@ -67,71 +72,69 @@ public class PasienView extends javax.swing.JFrame {
 // ===============================
 private void openPilihJadwalPopup() {
 
-    // Pastikan label jadwal terpilih ada
-    if (lblJadwalTerpilih == null) {
-        System.out.println("Label lblJadwalTerpilih belum dibuat di Form!");
-        return;
-    }
-
-    // Buat popup dialog PilihJadwal
     PilihJadwal dialog = new PilihJadwal(
-            this, // owner (PasienView)
-            (idJadwal, summary) -> {  // CALLBACK dari popup
+            this,
+            (idJadwal, summary) -> {
                 pickedIdJadwal = idJadwal;
                 pickedJadwalText = summary;
-
-                // Tampilkan hasil pilihan ke label
                 lblJadwalTerpilih.setText("Dipilih: " + summary);
             }
     );
 
-    dialog.setVisible(true); // Tampilkan dialog
+    dialog.setVisible(true);
 }
+
 
     
     // ================= KIRIM JANJI TEMU =================
     public void aksiSimpanJanji() {
-        String idPasien = UserSession.getIdPasien();
-        String keluhan = txtKeluhan.getText().trim();
 
-        if (keluhan.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Mohon isi keluhan Anda!");
-            return;
-        }
+    String idPasien = UserSession.getIdPasien(); 
+    String keluhan = txtKeluhan.getText().trim();
 
-        if (pickedIdJadwal == -1) {
-            JOptionPane.showMessageDialog(this, "Silakan pilih jadwal terlebih dahulu!");
-            return;
-        }
-
-        boolean berhasil = janjiController.tambahJanjiTemu(pickedIdJadwal, idPasien, keluhan);
-
-        if (berhasil) {
-            JOptionPane.showMessageDialog(this, "Berhasil! Janji Temu telah dibuat.");
-
-            bersihkanForm();
-            refreshTabelStatus();
-        } else {
-            JOptionPane.showMessageDialog(this, "Gagal menyimpan. Silakan coba lagi.");
-        }
+    if (keluhan.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Mohon isi keluhan Anda!");
+        return;
     }
+
+    if (pickedIdJadwal == -1) {
+        JOptionPane.showMessageDialog(this, "Silakan pilih jadwal terlebih dahulu!");
+        return;
+    }
+
+    boolean berhasil = janjiController.tambahJanjiTemu(pickedIdJadwal, idPasien, keluhan);
+
+    if (berhasil) {
+        JOptionPane.showMessageDialog(this, "Berhasil! Janji Temu telah dibuat.");
+        bersihkanForm();
+        refreshTabelStatus();
+    } else {
+        JOptionPane.showMessageDialog(this, "Gagal menyimpan. Silakan coba lagi.");
+    }
+}
+
 
     // Method untuk membersihkan form input
     private void bersihkanForm() {
-        txtKeluhan.setText("");
-        pickedIdJadwal = -1;
-        pickedJadwalText = null;
-        lblJadwalTerpilih.setText("Belum memilih jadwal");
+    txtKeluhan.setText("");
+    pickedIdJadwal = -1;
+    pickedJadwalText = null;
+    lblJadwalTerpilih.setText("Belum memilih jadwal");
     }
+
     
     
     // Method untuk me-refresh tabel status (Tab 2)
     private void refreshTabelStatus() {
-         if (tabelStatus != null) {
-            tabelStatus.setModel(janjiController.createTable());
-            janjiController.tampilkanRiwayat();
-        }
+    try {
+        DefaultTableModel model = janjiController.createTable();
+        tabelStatus.setModel(model);
+        janjiController.tampilkanRiwayat();
+    } catch (Exception ex) {
+        System.out.println("Gagal refresh tabel: " + ex.getMessage());
     }
+}
+
     
     private void clearStatusTable() {
     DefaultTableModel model = (DefaultTableModel) tabelStatus.getModel();
@@ -232,6 +235,8 @@ private void openPilihJadwalPopup() {
         lblTampilNama.setForeground(new java.awt.Color(51, 51, 51));
         lblTampilNama.setText("-");
 
+        btnCariJadwal.setBackground(new java.awt.Color(255, 255, 153));
+        btnCariJadwal.setForeground(new java.awt.Color(0, 0, 0));
         btnCariJadwal.setText("Cari Jadwal");
         btnCariJadwal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -255,12 +260,12 @@ private void openPilihJadwalPopup() {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel7)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lblTampilNama))
-                                    .addComponent(jLabel3))
-                                .addGap(0, 568, Short.MAX_VALUE))
+                                        .addComponent(lblTampilNama)))
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -274,7 +279,7 @@ private void openPilihJadwalPopup() {
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(lblJadwalTerpilih)
                                             .addComponent(lblJadwal))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 253, Short.MAX_VALUE)
                                 .addComponent(btnKirimPermintaan, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -323,6 +328,11 @@ private void openPilihJadwalPopup() {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabelStatus.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelStatusMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tabelStatus);
 
         jLabel6.setFont(new java.awt.Font("Bahnschrift", 1, 24)); // NOI18N
@@ -440,6 +450,10 @@ private void openPilihJadwalPopup() {
     private void btnCariJadwalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariJadwalActionPerformed
        openPilihJadwalPopup();
     }//GEN-LAST:event_btnCariJadwalActionPerformed
+
+    private void tabelStatusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelStatusMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabelStatusMouseClicked
 
     
     /**
