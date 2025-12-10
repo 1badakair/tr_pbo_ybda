@@ -25,7 +25,6 @@ public class DokterView extends javax.swing.JFrame {
 //    private javax.swing.event.ChangeListener jamMulaiListener;
 //    private javax.swing.event.ChangeListener jamSelesaiListener;
 //    private boolean programmaticUpdate = false;
-
     public DokterView() {
         initComponents();
     }
@@ -49,7 +48,6 @@ public class DokterView extends javax.swing.JFrame {
 //        };
 //
 //        spJamSelesai.addChangeListener(jamSelesaiListener);
-
         this.jLabel1.setText("Selamat Datang " + nama_dokter);
         this.jLabel3.setText(nama_dokter);
         this.jLabel10.setText(nama_dokter);
@@ -417,9 +415,14 @@ public class DokterView extends javax.swing.JFrame {
 
         jLabel17.setText("Apakah anda yakin ingin menghapus jadwal tersebut?");
 
-        btnTidak.setText("Tidak");
+        btnTidak.setText("Clear");
+        btnTidak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTidakActionPerformed(evt);
+            }
+        });
 
-        btnYa.setText("Ya");
+        btnYa.setText("Hapus");
         btnYa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnYaActionPerformed(evt);
@@ -464,7 +467,7 @@ public class DokterView extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnTidak)
                     .addComponent(btnYa))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
 
         jTabbedPane4.addTab("Hapus", jPanel5);
@@ -705,12 +708,24 @@ public class DokterView extends javax.swing.JFrame {
 
     private void btnYaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnYaActionPerformed
         // TODO add your handling code here:
-        // Hubungkan dengan controller
-
         // Persiapan nilai
         int id = Integer.parseInt(this.lblDIdJadwal.getText());
 
-        // Panggil method hapus
+// 🔹 Tampilkan konfirmasi hapus
+        int konfirmasi = JOptionPane.showConfirmDialog(
+                this,
+                "Anda yakin ingin menghapus jadwal dokter ini?",
+                "Konfirmasi Hapus",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+// Jika user pilih "Tidak", hentikan proses hapus
+        if (konfirmasi != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+// Panggil method hapus
         boolean status = jdc.hapusJadwalDokter(id);
 
         if (status == true) {
@@ -725,6 +740,7 @@ public class DokterView extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Gagal hapus data");
         }
+
     }//GEN-LAST:event_btnYaActionPerformed
 
     private void TableDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableDeleteMouseClicked
@@ -736,6 +752,11 @@ public class DokterView extends javax.swing.JFrame {
         this.idJadwal = Integer.parseInt(dtm2.getValueAt(pilih, 0).toString());
         this.lblDIdJadwal.setText(String.valueOf(idJadwal));
     }//GEN-LAST:event_TableDeleteMouseClicked
+
+    private void btnTidakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTidakActionPerformed
+        // TODO add your handling code here:
+        this.lblDIdJadwal.setText("-");
+    }//GEN-LAST:event_btnTidakActionPerformed
 
     /**
      * @param args the command line arguments

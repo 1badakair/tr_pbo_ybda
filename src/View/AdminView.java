@@ -24,7 +24,7 @@ public class AdminView extends javax.swing.JFrame {
 
     public AdminView(String nama_admin) {
         initComponents();
-        this.jLabel1.setText("Selamat Datang " + nama_admin);
+        this.jLabel1.setText("Hallo Selamat Datang " + nama_admin);
 
         // Agar ketika form dashboard di Load, tabelnya auto terisi
         DokterController dc = new DokterController();
@@ -49,7 +49,7 @@ public class AdminView extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
         Jpannel = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -81,21 +81,22 @@ public class AdminView extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        txtHClear = new javax.swing.JButton();
+        txtHHapus = new javax.swing.JButton();
         lblHId = new javax.swing.JLabel();
         txtHNama = new javax.swing.JTextField();
         txtHSpesialis = new javax.swing.JTextField();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(72, 202, 228));
 
-        jLabel1.setFont(new java.awt.Font("Bahnschrift", 1, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("DASHBOARD ADMIN");
+        jLabel23.setFont(new java.awt.Font("Bahnschrift", 1, 36)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel23.setText("DASHBOARD ADMIN");
 
         Jpannel.setBackground(new java.awt.Color(255, 255, 153));
 
@@ -332,14 +333,19 @@ public class AdminView extends javax.swing.JFrame {
         jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel17.setText("Cari Id            :");
 
-        jButton3.setBackground(new java.awt.Color(255, 255, 153));
-        jButton3.setText("Cari");
-
-        jButton5.setBackground(new java.awt.Color(255, 153, 153));
-        jButton5.setText("Hapus");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        txtHClear.setBackground(new java.awt.Color(255, 255, 153));
+        txtHClear.setText("Clear");
+        txtHClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                txtHClearActionPerformed(evt);
+            }
+        });
+
+        txtHHapus.setBackground(new java.awt.Color(255, 153, 153));
+        txtHHapus.setText("Hapus");
+        txtHHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtHHapusActionPerformed(evt);
             }
         });
 
@@ -357,16 +363,16 @@ public class AdminView extends javax.swing.JFrame {
                     .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtHSpesialis, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lblHId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtHNama, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
-                        .addGap(48, 48, 48)
-                        .addComponent(jButton3)
+                        .addComponent(txtHSpesialis, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(122, 122, 122)
+                        .addComponent(txtHHapus)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(txtHClear))
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(lblHId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtHNama, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)))
+                .addContainerGap(219, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(16, Short.MAX_VALUE)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -380,18 +386,18 @@ public class AdminView extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17)
-                    .addComponent(jButton3)
-                    .addComponent(jButton5)
                     .addComponent(lblHId))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(txtHNama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(txtHSpesialis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28))
+                    .addComponent(txtHSpesialis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtHHapus)
+                    .addComponent(txtHClear))
+                .addGap(27, 27, 27))
         );
 
         Jpannel.addTab("Hapus", jPanel4);
@@ -412,35 +418,49 @@ public class AdminView extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Bahnschrift", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("_");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75)
-                .addComponent(jButton7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton6)
-                .addGap(37, 37, 37))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(47, 47, 47)
-                .addComponent(Jpannel, javax.swing.GroupLayout.PREFERRED_SIZE, 804, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(75, 75, 75))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jButton7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton6)
+                        .addGap(37, 37, 37))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(Jpannel, javax.swing.GroupLayout.PREFERRED_SIZE, 804, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(49, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel23)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButton7)
                         .addComponent(jButton6)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Jpannel, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -559,15 +579,29 @@ public class AdminView extends javax.swing.JFrame {
         this.txtUSpesialis.setText(dtm2.getValueAt(pilih, 2).toString());
     }//GEN-LAST:event_TableUpdateMouseClicked
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void txtHHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHHapusActionPerformed
         // TODO add your handling code here:
         // Hubungkan dengan controller
         DokterController dc = new DokterController();
 
-        // Persiapan nilai
+// Persiapan nilai
         String a = this.lblHId.getText();
 
-        // Panggil method hapus
+// 🔹 Tampilkan konfirmasi sebelum hapus
+        int konfirmasi = JOptionPane.showConfirmDialog(
+                this,
+                "Anda yakin ingin menghapus data dokter ini?",
+                "Konfirmasi Hapus",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+// Jika user pilih "No", hentikan proses
+        if (konfirmasi != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+// 🔹 Lanjutkan hapus
         boolean status = dc.hapusDokter(a);
 
         if (status == true) {
@@ -582,19 +616,21 @@ public class AdminView extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Gagal hapus data");
         }
-    }//GEN-LAST:event_jButton5ActionPerformed
+
+    }//GEN-LAST:event_txtHHapusActionPerformed
 
     private void TableHapusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableHapusMouseClicked
         // TODO add your handling code here:
-        DefaultTableModel dtm2 = (DefaultTableModel) this.TableUpdate.getModel();
+        DefaultTableModel dtm2 = (DefaultTableModel) this.TableHapus.getModel();
 
         // 2. Ambil nilai 1 baris dari data yang di klik
-        int pilih = this.TableUpdate.getSelectedRow();
+        int pilih = this.TableHapus.getSelectedRow();
 
         // 3. Data satu baris yang terambil dipasang di txtfield
         // Nb: Baris: var pilih, kolom: 0 - 3
-        this.txtHNama.setText(dtm2.getValueAt(pilih, 0).toString());
-        this.txtHSpesialis.setText(dtm2.getValueAt(pilih, 1).toString());
+        this.lblHId.setText(dtm2.getValueAt( pilih, 0).toString());
+        this.txtHNama.setText(dtm2.getValueAt(pilih, 1).toString());
+        this.txtHSpesialis.setText(dtm2.getValueAt(pilih, 2).toString());
     }//GEN-LAST:event_TableHapusMouseClicked
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -621,6 +657,13 @@ public class AdminView extends javax.swing.JFrame {
         this.txtUNama.setText("");
         this.txtUSpesialis.setText("");
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void txtHClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHClearActionPerformed
+        // TODO add your handling code here:
+        this.txtHNama.setText("");
+        this.lblHId.setText("-");
+        this.txtHSpesialis.setText("");
+    }//GEN-LAST:event_txtHClearActionPerformed
 
     /**
      * @param args the command line arguments
@@ -666,9 +709,7 @@ public class AdminView extends javax.swing.JFrame {
     private javax.swing.JTable TableUpdate;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
@@ -677,6 +718,7 @@ public class AdminView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -692,6 +734,8 @@ public class AdminView extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lblHId;
     private javax.swing.JLabel lblUId;
+    private javax.swing.JButton txtHClear;
+    private javax.swing.JButton txtHHapus;
     private javax.swing.JTextField txtHNama;
     private javax.swing.JTextField txtHSpesialis;
     private javax.swing.JTextField txtId;

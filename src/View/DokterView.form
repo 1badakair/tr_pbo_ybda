@@ -613,7 +613,7 @@
                               <Component id="btnTidak" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnYa" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="63" max="32767" attributes="0"/>
+                          <EmptySpace pref="67" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -660,12 +660,15 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="btnTidak">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Tidak"/>
+                    <Property name="text" type="java.lang.String" value="Clear"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTidakActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnYa">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Ya"/>
+                    <Property name="text" type="java.lang.String" value="Hapus"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnYaActionPerformed"/>
