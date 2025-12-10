@@ -23,13 +23,13 @@ public class JadwalDokterController {
     // ==================== KONSTRUKTOR ====================
     public JadwalDokterController(String idDokter) {
         this.idDokter = idDokter; // Simpan ID saat login
-        
+
         // objek koneksi
         Koneksi db = new Koneksi();
         db.config();
         this.stm = db.stm;
     }
-    
+
     // Getter untuk idDokter (jika dibutuhkan view)
     public String getIdDokter() {
         return this.idDokter;
@@ -94,7 +94,7 @@ public class JadwalDokterController {
                     + ja.getJam_mulai() + "', '"
                     + ja.getJam_selesai() + "', '"
                     + ja.getTanggal() + "')";
-            
+
             this.stm.executeUpdate(sql);
             return true;
         } catch (Exception e) {
@@ -119,7 +119,7 @@ public class JadwalDokterController {
                     + "', jam_selesai = '" + ja.getJam_selesai()
                     + "', tanggal = '" + ja.getTanggal()
                     + "' WHERE id_jadwal = " + ja.getId_jadwal(); // Pastikan nama kolom WHERE sesuai DB (biasanya id_jadwal)
-            
+
             this.stm.executeUpdate(sql);
             return true;
         } catch (Exception e) {
@@ -143,58 +143,88 @@ public class JadwalDokterController {
     // =========================================================================
     //              BAGIAN TAB VERIFIKASI (PENTING AGAR TIDAK ERROR)
     // =========================================================================
-
     // Method 6: Ambil Daftar Pasien untuk tabel Verifikasi
     public DefaultTableModel getDaftarPasien() {
-    DefaultTableModel dtm = new DefaultTableModel();
+        DefaultTableModel dtm = new DefaultTableModel();
 
-    dtm.addColumn("ID Daftar");
-    dtm.addColumn("Nama Pasien");
-    dtm.addColumn("Tanggal");
-    dtm.addColumn("Keluhan");
-    dtm.addColumn("Status");
+        dtm.addColumn("ID Daftar");
+        dtm.addColumn("Nama Pasien");
+        dtm.addColumn("Tanggal");
+        dtm.addColumn("Keluhan");
+        dtm.addColumn("Status");
 
-    try {
-        String sql =
-            "SELECT jt.id_janji_temu, p.nama_pasien, j.tanggal, jt.keluhan_pasien, jt.status " +
-            "FROM tb_janji_temu jt " +
-            "JOIN tb_pasien p ON jt.id_pasien = p.id_pasien " +
-            "JOIN tb_jadwal j ON jt.id_jadwal = j.id_jadwal " +
-            "WHERE j.id_dokter = '" + this.idDokter + "'";
+        try {
+            String sql
+                    = "SELECT jt.id_janji_temu, p.nama_pasien, j.tanggal, jt.keluhan_pasien, jt.status "
+                    + "FROM tb_janji_temu jt "
+                    + "JOIN tb_pasien p ON jt.id_pasien = p.id_pasien "
+                    + "JOIN tb_jadwal j ON jt.id_jadwal = j.id_jadwal "
+                    + "WHERE j.id_dokter = '" + this.idDokter + "'";
 
-        res = stm.executeQuery(sql);
+            res = stm.executeQuery(sql);
 
-        while (res.next()) {
-            dtm.addRow(new Object[]{
-                res.getString("id_janji_temu"),
-                res.getString("nama_pasien"),
-                res.getDate("tanggal"),
-                res.getString("keluhan_pasien"),
-                res.getString("status")
-            });
+            while (res.next()) {
+                dtm.addRow(new Object[]{
+                    res.getString("id_janji_temu"),
+                    res.getString("nama_pasien"),
+                    res.getDate("tanggal"),
+                    res.getString("keluhan_pasien"),
+                    res.getString("status")
+                });
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error getDaftarPasien : " + e.getMessage());
         }
 
-    } catch (Exception e) {
-        System.out.println("Error getDaftarPasien : " + e.getMessage());
+        return dtm;
     }
-
-    return dtm;
-}
-    
-    public boolean updateStatusPasien(String idDaftar, String status){
-
+public DefaultTableModel getSemuaJadwal() {
+    DefaultTableModel model = createTable();
     try {
-        String sqlUpdate = 
-            "UPDATE tb_janji_temu SET status = '" + status + "' WHERE id_janji_temu = '" + idDaftar + "'";
-        stm.executeUpdate(sqlUpdate);
-        return true;
+        this.sql = "SELECT * FROM tb_jadwal";
+        this.res = this.stm.executeQuery(sql);
+
+        while (res.next()) {
+            Object[] obj = {
+                res.getInt("id_jadwal"),
+                res.getString("id_dokter"),
+                res.getDate("tanggal"),
+                res.getTime("jam_mulai"),
+                res.getTime("jam_selesai"),
+                res.getInt("kuota")
+            };
+            model.addRow(obj);
+        }
     } catch (Exception e) {
-        System.out.println("Gagal update status pasien: " + e.getMessage());
-        return false;
+        System.out.println("Error getSemuaJadwal: " + e.getMessage());
+    }
+
+    return model;
+}
+    public boolean updateStatusPasien(String idDaftar, String status) {
+
+        try {
+            String sqlUpdate
+                    = "UPDATE tb_janji_temu SET status = '" + status + "' WHERE id_janji_temu = '" + idDaftar + "'";
+            stm.executeUpdate(sqlUpdate);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Gagal update status pasien: " + e.getMessage());
+            return false;
+        }
+        // Khusus untuk Pasien (lihat semua jadwal)
+
+
+    }
+    //agar -1 setelah di ambil
+    public void kurangiKuota(int idJadwal) {
+    try {
+        String q = "UPDATE tb_jadwal SET kuota = kuota - 1 WHERE id_jadwal = " + idJadwal;
+        stm.executeUpdate(q);
+    } catch (Exception e) {
+        System.out.println("Gagal update kuota: " + e.getMessage());
     }
 }
-    
-
-
 
 }

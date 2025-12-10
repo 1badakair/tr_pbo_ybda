@@ -166,6 +166,7 @@ public class LoginView extends javax.swing.JFrame {
         if (role == null) {
             JOptionPane.showMessageDialog(this, "Login gagal");
             return;
+            
         }
         
         // --- TAMBAHAN PENTING: Import UserSession di bagian paling atas file ---
